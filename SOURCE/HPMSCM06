@@ -1,0 +1,127 @@
+      **************************************************************************
+      * CATEGORY.: HPMS CICS PROGRAMS
+      * GROUP....: COBOL
+      * AUTHOR...: LANCE HAYNIE <LANCE@HAYNIEMAIL.COM>
+      * DATE.....: 2017-10-02
+      * PURPOSE..: PROJECT MGMT MAIN MENU
+      **************************************************************************
+      * MODIFICATIONS
+      * 2017-10-02 - LHAYNIE - INITIAL VERSION
+      **************************************************************************
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.  HPMSCM06.
+      **************************************************************************
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  SWITCHES.
+           05  VALID-DATA-SW                 PIC X.
+       01  PROGRAM-TABLE.
+           05  PROGRAM-LIST.
+               10  PROGRAM-1                 PIC X(8) VALUE 'HPMSCPM1'.
+               10  PROGRAM-2                 PIC X(8) VALUE 'HPMSCPM2'.
+           05  PROGRAM-NAME REDEFINES PROGRAM-LIST
+                 OCCURS 2 TIMES
+                                             PIC X(8).
+       01  SUBSCRIPTS.
+           05  ACTION-SUB                    PIC 9.
+       01  END-OF-SESSION-MESSAGE            PIC X(20)
+             VALUE 'HPMS SESSION ENDED'.
+       01  RESPONSE-CODE                     PIC S9(8) COMP.
+       COPY HPMSB01.
+       COPY DFHAID.
+      **************************************************************************
+       LINKAGE SECTION.
+       01  DFHCOMMAREA                       PIC X.
+      **************************************************************************
+       PROCEDURE DIVISION.
+           EVALUATE TRUE
+               WHEN EIBCALEN = ZERO
+                   MOVE LOW-VALUES TO MENUO
+                   PERFORM SEND-MENU-MAP
+               WHEN EIBAID = DFHCLEAR
+                   MOVE LOW-VALUES TO MENUO
+                   PERFORM SEND-MENU-MAP
+               WHEN EIBAID = DFHPF3
+                   EXEC CICS
+                       XCTL PROGRAM ('HPMSCM01')
+                            RESP(RESPONSE-CODE)
+                   END-EXEC
+               WHEN EIBAID = DFHPF12
+                   PERFORM END-OF-PROGRAM
+               WHEN EIBAID = DFHENTER
+                   PERFORM PROCESS-MENU-MAP
+               WHEN OTHER
+                   MOVE LOW-VALUES TO MENUO
+                   MOVE 'INVALID KEY PRESSED' TO MSGO
+                   PERFORM SEND-MENU-MAP
+           END-EVALUATE.
+           PERFORM END-OF-PROGRAM.
+      **************************************************************************
+       PROCESS-MENU-MAP.
+           PERFORM RECEIVE-MENU-MAP.
+           PERFORM EDIT-MENU-DATA.
+           IF VALID-DATA-SW = 'Y'
+               MOVE ACTIONI TO ACTION-SUB
+               PERFORM BRANCH-TO-PROGRAM
+           END-IF.
+           PERFORM SEND-MENU-MAP.
+      **************************************************************************
+       PREPARE-MENU.
+           MOVE "HAYNIE RESEARCH AND DEVELOPMENT" TO TITLE1O.
+           MOVE "HPMSCM06" TO PNAMEO.
+           MOVE "PROJECT MANAGEMENT" TO TITLE2O.
+           MOVE "MAIN MENU" TO TITLE3O.
+           MOVE "1  ADD PROJECT" TO OPTION1O.
+           MOVE "ADD NEW PROJECT" TO DESC1O.
+           MOVE "2  PROJECT INQUIRY" TO OPTION2O.
+           MOVE "PROJECT INQUIRY/UPDATE BY PROJECT ID" TO DESC2O.
+           MOVE "PF KEYS: PF3=MAIN MENU PF12=EXIT APPLICATION           DO.
+      -         " TO COMMANDO.
+      **************************************************************************
+       RECEIVE-MENU-MAP.
+           EXEC CICS
+               RECEIVE MAP('MENU')
+                       MAPSET('HPMSB01')
+                       INTO(MENUI)
+           END-EXEC.
+      **************************************************************************
+       EDIT-MENU-DATA.
+           IF ACTIONI >= '0' AND <= '9'
+               MOVE 'Y' TO VALID-DATA-SW
+           ELSE
+               MOVE 'YOU DID NOT ENTER A VALID OPTION' TO MSGO
+               MOVE 'N' TO VALID-DATA-SW
+           END-IF.
+      **************************************************************************
+       BRANCH-TO-PROGRAM.
+           EXEC CICS
+               XCTL PROGRAM (PROGRAM-NAME(ACTION-SUB))
+               RESP(RESPONSE-CODE)
+           END-EXEC.
+           MOVE 'THAT OPTION IS NOT AVAILABLE' TO MSGO.
+      **************************************************************************
+       SEND-MENU-MAP.
+           PERFORM PREPARE-MENU.
+           EXEC CICS
+                SEND MAP('MENU')
+                 MAPSET('HPMSB01')
+                 FROM(MENUO)
+                 ERASE
+           END-EXEC.
+           MOVE LOW-VALUES TO MENUO.
+           EXEC CICS RETURN
+                TRANSID('PROJ')
+                COMMAREA(MENUO)
+                RESP(RESPONSE-CODE)
+           END-EXEC.
+      **************************************************************************
+       END-OF-PROGRAM.
+           EXEC CICS
+               SEND TEXT FROM(END-OF-SESSION-MESSAGE)
+                         ERASE
+                         FREEKB
+           END-EXEC.
+           EXEC CICS
+               RETURN
+           END-EXEC.
+

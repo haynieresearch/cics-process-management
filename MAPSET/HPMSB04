@@ -1,0 +1,183 @@
+         PRINT NOGEN
+HPMSB04  DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      *
+               CTRL=FREEKB,TERM=3270-2,TIOAPFX=YES,                    *
+               MAPATTS=(COLOR,HILIGHT,OUTLINE,PS,TRANSP,VALIDN),       *
+               DSATTS=(COLOR,HILIGHT,OUTLINE,PS,TRANSP,VALIDN)
+***********************************************************************
+TLOGR    DFHMDI SIZE=(24,80),                                          *
+               COLUMN=1,                                               *
+               LINE=1
+         DFHMDF POS=(3,1),LENGTH=6,INITIAL='ID',                       *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=BLUE
+         DFHMDF POS=(3,9),LENGTH=10,INITIAL='DATE',                    *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=BLUE
+         DFHMDF POS=(3,21),LENGTH=28,INITIAL='CATEGORY',               *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=BLUE
+         DFHMDF POS=(3,51),LENGTH=28,INITIAL='GROUP',                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=BLUE
+DATE1    DFHMDF POS=(4,9),LENGTH=10,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY1 DFHMDF POS=(4,21),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP1   DFHMDF POS=(4,51),LENGTH=28,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE2    DFHMDF POS=(5,9),LENGTH=10,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY2 DFHMDF POS=(5,21),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP2   DFHMDF POS=(5,51),LENGTH=28,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID2      DFHMDF POS=(5,1),LENGTH=6,                                    *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE3    DFHMDF POS=(6,9),LENGTH=10,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY3 DFHMDF POS=(6,21),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP3   DFHMDF POS=(6,51),LENGTH=28,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID4      DFHMDF POS=(6,1),LENGTH=6,                                    *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID5      DFHMDF POS=(7,1),LENGTH=6,                                    *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE4    DFHMDF POS=(7,9),LENGTH=10,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY4 DFHMDF POS=(7,21),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP4   DFHMDF POS=(7,51),LENGTH=28,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID6      DFHMDF POS=(8,1),LENGTH=6,                                    *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE5    DFHMDF POS=(8,9),LENGTH=10,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY5 DFHMDF POS=(8,21),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP5   DFHMDF POS=(8,51),LENGTH=28,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID7      DFHMDF POS=(9,1),LENGTH=6,                                    *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE6    DFHMDF POS=(9,9),LENGTH=10,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY6 DFHMDF POS=(9,21),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP6   DFHMDF POS=(9,51),LENGTH=28,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID8      DFHMDF POS=(10,1),LENGTH=6,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE7    DFHMDF POS=(10,9),LENGTH=10,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY7 DFHMDF POS=(10,21),LENGTH=28,                                *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP7   DFHMDF POS=(10,51),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID9      DFHMDF POS=(11,1),LENGTH=6,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE8    DFHMDF POS=(11,9),LENGTH=10,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY8 DFHMDF POS=(11,21),LENGTH=28,                                *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP8   DFHMDF POS=(11,51),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID10     DFHMDF POS=(12,1),LENGTH=6,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE9    DFHMDF POS=(12,9),LENGTH=10,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY9 DFHMDF POS=(12,21),LENGTH=28,                                *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP9   DFHMDF POS=(12,51),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID11     DFHMDF POS=(13,1),LENGTH=6,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE10   DFHMDF POS=(13,9),LENGTH=10,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY10 DFHMDF POS=(13,21),LENGTH=28,                               *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP10  DFHMDF POS=(13,51),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID12     DFHMDF POS=(14,1),LENGTH=6,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE11   DFHMDF POS=(14,9),LENGTH=10,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY11 DFHMDF POS=(14,21),LENGTH=28,                               *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP11  DFHMDF POS=(14,51),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID13     DFHMDF POS=(15,1),LENGTH=6,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE12   DFHMDF POS=(15,9),LENGTH=10,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY12 DFHMDF POS=(15,21),LENGTH=28,                               *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP12  DFHMDF POS=(15,51),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID14     DFHMDF POS=(16,1),LENGTH=6,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE13   DFHMDF POS=(16,9),LENGTH=10,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY13 DFHMDF POS=(16,21),LENGTH=28,                               *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP13  DFHMDF POS=(16,51),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID15     DFHMDF POS=(17,1),LENGTH=6,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE14   DFHMDF POS=(17,9),LENGTH=10,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY14 DFHMDF POS=(17,21),LENGTH=28,                               *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP14  DFHMDF POS=(17,51),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID16     DFHMDF POS=(18,1),LENGTH=6,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE15   DFHMDF POS=(18,9),LENGTH=10,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY15 DFHMDF POS=(18,21),LENGTH=28,                               *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP15  DFHMDF POS=(18,51),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID17     DFHMDF POS=(19,1),LENGTH=6,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE16   DFHMDF POS=(19,9),LENGTH=10,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY16 DFHMDF POS=(19,21),LENGTH=28,                               *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP16  DFHMDF POS=(19,51),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID18     DFHMDF POS=(20,1),LENGTH=6,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE17   DFHMDF POS=(20,9),LENGTH=10,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY17 DFHMDF POS=(20,21),LENGTH=28,                               *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP17  DFHMDF POS=(20,51),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID19     DFHMDF POS=(21,1),LENGTH=6,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE18   DFHMDF POS=(21,9),LENGTH=10,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY18 DFHMDF POS=(21,21),LENGTH=28,                               *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP18  DFHMDF POS=(21,51),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID20     DFHMDF POS=(22,1),LENGTH=6,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+DATE19   DFHMDF POS=(22,9),LENGTH=10,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY19 DFHMDF POS=(22,21),LENGTH=28,                               *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP19  DFHMDF POS=(22,50),LENGTH=28,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+ID1      DFHMDF POS=(4,1),LENGTH=6,                                    *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+TITLE1   DFHMDF POS=(1,1),LENGTH=70,INITIAL='TEST AND EXPERIMENT LOG', *
+               ATTRB=PROT,COLOR=RED
+PNAME    DFHMDF POS=(1,72),LENGTH=8,INITIAL='HPMSCT03',                *
+               ATTRB=PROT,COLOR=BLUE
+TITLE2   DFHMDF POS=(2,1),LENGTH=70,INITIAL='TEST LOG REPORT',         *
+               ATTRB=PROT,COLOR=RED
+MSG      DFHMDF POS=(23,1),LENGTH=79,                                  *
+               ATTRB=PROT,COLOR=RED
+COMMAND  DFHMDF POS=(24,1),LENGTH=79,                                  *
+               INITIAL='PFKEYS: PF3=EXIT PF7=PREV PF8=NEXT',           *
+               ATTRB=PROT,COLOR=NEUTRAL
+***********************************************************************
+         DFHMSD TYPE=FINAL
+         END

@@ -1,0 +1,194 @@
+      **************************************************************************
+      * CATEGORY.: HPMS CICS PROGRAMS
+      * GROUP....: COBOL
+      * AUTHOR...: LANCE HAYNIE <LANCE@HAYNIEMAIL.COM>
+      * DATE.....: 2017-09-29
+      * PURPOSE..: ADD PROPELLANT GRAIN RECORD
+      **************************************************************************
+      * MODIFICATIONS
+      * 2017-09-29 - LHAYNIE - INITIAL VERSION
+      **************************************************************************
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.  HPMSCP01.
+      **************************************************************************
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  LOCAL-TRAIN-ID               PIC X(4) VALUE 'PI01'.
+       01  MASTER-RECORD-LRECL          PIC S9(4) COMP VALUE 449.
+       01  DATA-RESP-CODE               PIC S9(8) COMP.
+       01  XCTL-RESP-CODE               PIC S9(8) COMP.
+       01  WS-RESPONSE                  PIC S9(8) COMP.
+       01  WS-REASON-CODE               PIC S9(8) COMP.
+       01  X-EIB-MESSAGE.
+           05  FILLER                   PIC X(8) VALUE 'EIBRESP='.
+           05  X-EIB-RESP               PIC 9(10) VALUE 0.
+           05  FILLER                   PIC X(11) VALUE ', EIBRESP2='.
+           05  X-EIB-RESP2              PIC 9(10) VALUE 0.
+           05  FILLER                   PIC X VALUE SPACE.
+           05  X-EIB-USER-MSG           PIC X(38) VALUE SPACES.
+       01  WS-COMMAREA.
+           05  CA-PINV-RECORD.
+               10  CA-RECORD-ID         PIC X(12).
+               10  FILLER               PIC X(437).
+       COPY HPMSB03.
+       COPY PROPINV.
+       COPY DFHAID.
+       COPY DFHBMSCA.
+      **************************************************************************
+       LINKAGE SECTION.
+       01  DFHCOMMAREA.
+           05  LS-PINV-RECORD.
+               10  LS-RECORD-ID         PIC X(12).
+               10  FILLER               PIC X(437).
+      **************************************************************************
+       PROCEDURE DIVISION.
+           IF EIBCALEN > ZERO
+               MOVE DFHCOMMAREA TO WS-COMMAREA
+           END-IF.
+
+           PERFORM CLEAR-MESSAGES.
+
+           EXEC CICS HANDLE CONDITION
+                ERROR   (GENERAL-ERROR-ROUTINE)
+                MAPFAIL (MAP-FAIL-ROUTINE)
+                NOTFND  (GENERAL-ERROR-ROUTINE)
+           END-EXEC.
+
+           EVALUATE TRUE
+             WHEN EIBCALEN = ZERO
+                  PERFORM DATA-INITIALIZE-SCREEN-RECORD
+                  PERFORM SCREEN-IO-SEND-UPDATE
+             WHEN EIBAID = DFHCLEAR
+                  PERFORM DATA-INITIALIZE-SCREEN-RECORD
+                  PERFORM SCREEN-IO-SEND-UPDATE
+             WHEN EIBAID = DFHPF5
+                  PERFORM ADD-INFORMATION
+             WHEN EIBAID = DFHPF3
+                  PERFORM END-OF-PROGRAM
+             WHEN OTHER
+                  PERFORM DATA-INITIALIZE-SCREEN-RECORD
+                  MOVE "YOU PRESSED AN INVALID KEY
+      -         " TO MSGO
+                  PERFORM SCREEN-IO-SEND-UPDATE
+             END-EVALUATE.
+             PERFORM END-OF-PROGRAM.
+      **************************************************************************
+       BUILD-HEADER.
+           MOVE 'PROPELLANT GRAIN INVENTORY' TO TITLE1O.
+           MOVE 'ADD' TO TITLE2O.
+           MOVE 'HPMSCP01' TO PNAMEO.
+           MOVE 'PFKEYS: PF3=EXIT PF5=ADD RECORD' TO COMMANDO.
+      **************************************************************************
+       CLEAR-MESSAGES.
+           MOVE SPACES TO COMMANDO.
+           MOVE SPACES TO MSGO.
+      **************************************************************************
+       MAP-FAIL-ROUTINE.
+           MOVE LOW-VALUES TO PINVO.
+           PERFORM DATA-INITIALIZE-SCREEN-RECORD.
+           MOVE "MAP FAILURE" TO X-EIB-USER-MSG.
+           ADD EIBRESP TO ZERO GIVING X-EIB-RESP.
+           ADD EIBRESP2 TO ZERO GIVING X-EIB-RESP2.
+           MOVE X-EIB-MESSAGE TO MSGO.
+           PERFORM SCREEN-IO-SEND-UPDATE.
+      **************************************************************************
+       PINV-WRITE.
+           EXEC CICS WRITE
+                DATASET('PROPINV')
+                FROM(HRD-GRAIN-INV-RECORD)
+                LENGTH(MASTER-RECORD-LRECL)
+                RIDFLD(CA-RECORD-ID)
+                RESP(DATA-RESP-CODE)
+           END-EXEC.
+      **************************************************************************
+       DATA-INITIALIZE-SCREEN-RECORD.
+           MOVE LOW-VALUES TO PINVO.
+           PERFORM BUILD-HEADER.
+      **************************************************************************
+       SCREEN-IO-SEND-UPDATE.
+           PERFORM BUILD-HEADER.
+           EXEC CICS SEND
+                MAP    ('PINV')
+                MAPSET ('HPMSB03')
+                ERASE
+           END-EXEC.
+           EXEC CICS RETURN
+                TRANSID  (LOCAL-TRAIN-ID)
+                COMMAREA (WS-COMMAREA)
+           END-EXEC.
+      **************************************************************************
+       GENERAL-ERROR-ROUTINE.
+           MOVE LOW-VALUES TO PINVO.
+
+           ADD EIBRESP TO ZERO GIVING X-EIB-RESP.
+           ADD EIBRESP2 TO ZERO GIVING X-EIB-RESP2.
+
+           IF X-EIB-RESP = 0000000012 THEN
+               MOVE "FILE NOT FOUND" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000013 THEN
+               MOVE "RECORD NOT FOUND" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000014 THEN
+               MOVE "DUPLICATE RECORD" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000015 THEN
+               MOVE "DUPLICATE KEY" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000016 THEN
+               MOVE "INVALID RECORD" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000018 THEN
+               MOVE "OUT OF SPACE" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000019 THEN
+               MOVE "FILE NOT OPEN" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000022 THEN
+               MOVE "LRECL ERROR" TO X-EIB-USER-MSG
+           ELSE
+               MOVE "GENERAL ERROR" TO X-EIB-USER-MSG
+           END-IF.
+
+           MOVE -1 TO SERIALL.
+           PERFORM DATA-INITIALIZE-SCREEN-RECORD.
+           MOVE X-EIB-MESSAGE TO MSGO.
+           PERFORM SCREEN-IO-SEND-UPDATE.
+      **************************************************************************
+       SCREEN-IO-GET-DATA-FOR-UPDATE.
+           EXEC CICS RECEIVE
+                MAP    ('PINV')
+                MAPSET ('HPMSB03')
+           END-EXEC.
+      **************************************************************************
+       DATA-SCREEN-TO-FILE.
+           MOVE SERIALI TO CA-RECORD-ID.
+           MOVE SERIALI TO GRAIN-SERIAL.
+           MOVE TYPEI TO GRAIN-TYPE.
+           MOVE FORMULAI TO GRAIN-FORMULA.
+           MOVE STATUSI TO GRAIN-STATUS.
+           MOVE QAI TO GRAIN-QA.
+           MOVE QUALITYI TO GRAIN-QUALITY.
+           MOVE DIAMETERI TO GRAIN-DIAMETER.
+           MOVE LENGTHI TO GRAIN-LENGTH.
+           MOVE WEIGHTI TO GRAIN-WEIGHT.
+           MOVE NOTE1I TO GRAIN-NOTE1.
+           MOVE NOTE2I TO GRAIN-NOTE2.
+           MOVE NOTE3I TO GRAIN-NOTE3.
+           MOVE NOTE4I TO GRAIN-NOTE4.
+           MOVE NOTE5I TO GRAIN-NOTE5.
+      **************************************************************************
+       ADD-INFORMATION.
+           PERFORM SCREEN-IO-GET-DATA-FOR-UPDATE.
+           PERFORM ADD-INFORMATION-DATA.
+      **************************************************************************
+       ADD-INFORMATION-DATA.
+           PERFORM DATA-SCREEN-TO-FILE.
+           PERFORM PINV-WRITE.
+
+           IF DATA-RESP-CODE = 0
+               PERFORM DATA-INITIALIZE-SCREEN-RECORD
+               MOVE "NEW PROPELLANT GRAIN ADDED" TO MSGO
+               PERFORM SCREEN-IO-SEND-UPDATE
+           ELSE
+               PERFORM GENERAL-ERROR-ROUTINE
+           END-IF.
+      **************************************************************************
+       END-OF-PROGRAM.
+           EXEC CICS XCTL
+                PROGRAM('HPMSCM03')
+                RESP(XCTL-RESP-CODE)
+           END-EXEC.

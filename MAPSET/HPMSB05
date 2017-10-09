@@ -1,0 +1,139 @@
+         PRINT NOGEN
+HPMSB05  DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      *
+               CTRL=FREEKB,TERM=3270-2,TIOAPFX=YES,                    *
+               MAPATTS=(COLOR,HILIGHT,VALIDN),                         *
+               DSATTS=(COLOR,HILIGHT,VALIDN)
+***********************************************************************
+PMGMT    DFHMDI SIZE=(24,80),                                          *
+               COLUMN=1,                                               *
+               LINE=1
+TITLE1   DFHMDF POS=(1,1),LENGTH=70,                                   *
+               ATTRB=ASKIP,COLOR=RED
+PNAME    DFHMDF POS=(1,72),LENGTH=8,                                   *
+               ATTRB=ASKIP,COLOR=BLUE
+TITLE2   DFHMDF POS=(2,1),LENGTH=70,                                   *
+               ATTRB=ASKIP,COLOR=RED
+         DFHMDF POS=(3,1),LENGTH=11,INITIAL='PROJECT ID:',             *
+               ATTRB=PROT,COLOR=GREEN
+ID       DFHMDF POS=(3,13),LENGTH=6,                                   *
+               JUSTIFY=RIGHT,INITIAL='',                               *
+               ATTRB=(NUM,IC),HILIGHT=UNDERLINE,COLOR=GREEN
+         DFHMDF POS=(3,20),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(4,1),LENGTH=18,INITIAL='PROJECT NAME.....:',      *
+               ATTRB=PROT,COLOR=GREEN
+NAME  DFHMDF POS=(4,20),LENGTH=30,INITIAL='',                          *
+               ATTRB=(UNPROT),HILIGHT=UNDERLINE
+         DFHMDF POS=(4,51),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(5,1),LENGTH=18,INITIAL='STATUS...........:',      *
+               ATTRB=PROT,COLOR=GREEN
+STATUS   DFHMDF POS=(5,20),LENGTH=15,INITIAL='',                       *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(5,36),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(5,37),LENGTH=13,INITIAL='ACTIVE (Y/N):',          *
+               ATTRB=PROT,COLOR=GREEN
+OPEN     DFHMDF POS=(5,51),LENGTH=1,INITIAL='Y',                       *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(5,53),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(6,1),LENGTH=18,INITIAL='PERCENT COMPLETE.:',      *
+               ATTRB=PROT,COLOR=GREEN
+PERCENT  DFHMDF POS=(6,20),LENGTH=3,                                   *
+               ATTRB=(NUM,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(6,24),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(6,25),LENGTH=1,INITIAL='%',                       *
+               ATTRB=PROT,COLOR=BLUE
+         DFHMDF POS=(7,1),LENGTH=18,INITIAL='START DATE.......:',      *
+               ATTRB=PROT,COLOR=GREEN
+SYEAR    DFHMDF POS=(7,20),LENGTH=4,INITIAL='',                        *
+               ATTRB=(NUM,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(7,25),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(7,26),LENGTH=1,INITIAL='/',                       *
+               ATTRB=ASKIP,COLOR=BLUE
+SMONTH   DFHMDF POS=(7,28),LENGTH=2,INITIAL='',                        *
+               ATTRB=(NUM,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(7,31),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(7,32),LENGTH=1,INITIAL='/',                       *
+               ATTRB=ASKIP,COLOR=BLUE
+SDAY     DFHMDF POS=(7,34),LENGTH=2,INITIAL='',                        *
+               ATTRB=(NUM,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(7,37),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(7,38),LENGTH=18,INITIAL='FORMAT: YYYY/MM/DD',     *
+               ATTRB=PROT,COLOR=RED
+         DFHMDF POS=(8,1),LENGTH=18,INITIAL='END DATE.........:',      *
+               ATTRB=PROT,COLOR=GREEN
+EYEAR    DFHMDF POS=(8,20),LENGTH=4,INITIAL='',                        *
+               ATTRB=(NUM,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(8,25),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(8,26),LENGTH=1,INITIAL='/',                       *
+               ATTRB=ASKIP,COLOR=BLUE
+EMONTH   DFHMDF POS=(8,28),LENGTH=2,INITIAL='',                        *
+               ATTRB=(NUM,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(8,31),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(8,32),LENGTH=1,INITIAL='/',                       *
+               ATTRB=ASKIP,COLOR=BLUE
+EDAY     DFHMDF POS=(8,34),LENGTH=2,INITIAL='',                        *
+               ATTRB=(NUM,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(8,37),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(8,38),LENGTH=18,INITIAL='FORMAT: YYYY/MM/DD',     *
+               ATTRB=PROT,COLOR=RED
+         DFHMDF POS=(10,1),LENGTH=15,INITIAL='STATUS UPDATES:',        *
+               ATTRB=PROT,COLOR=GREEN
+STATUSNOTE1 DFHMDF POS=(11,1),LENGTH=75,INITIAL='',                    *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(11,77),LENGTH=0,                                  *
+               ATTRB=ASKIP
+STATUSNOTE2 DFHMDF POS=(12,1),LENGTH=75,INITIAL='',                    *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(12,77),LENGTH=0,                                  *
+               ATTRB=ASKIP
+STATUSNOTE3 DFHMDF POS=(13,1),LENGTH=75,INITIAL='',                    *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(13,77),LENGTH=0,                                  *
+               ATTRB=ASKIP
+STATUSNOTE4 DFHMDF POS=(15,1),LENGTH=75,                               *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(15,77),LENGTH=0,                                  *
+               ATTRB=ASKIP
+STATUSNOTE5 DFHMDF POS=(14,1),LENGTH=75,INITIAL='',                    *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(14,77),LENGTH=0,                                  *
+               ATTRB=ASKIP
+         DFHMDF POS=(17,1),LENGTH=6,INITIAL='NOTES:',                  *
+               ATTRB=PROT,COLOR=GREEN
+NOTE1    DFHMDF POS=(18,1),LENGTH=75,INITIAL='',                       *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(18,77),LENGTH=0,                                  *
+               ATTRB=ASKIP
+NOTE2    DFHMDF POS=(19,1),LENGTH=75,INITIAL='',                       *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(19,77),LENGTH=0,                                  *
+               ATTRB=ASKIP
+NOTE3    DFHMDF POS=(20,1),LENGTH=75,INITIAL='',                       *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(20,77),LENGTH=0,                                  *
+               ATTRB=ASKIP
+NOTE4    DFHMDF POS=(21,1),LENGTH=75,INITIAL='',                       *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(21,77),LENGTH=0,                                  *
+               ATTRB=ASKIP
+NOTE5    DFHMDF POS=(22,1),LENGTH=75,INITIAL='',                       *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE
+         DFHMDF POS=(22,77),LENGTH=0,                                  *
+               ATTRB=ASKIP
+MSG      DFHMDF POS=(23,1),LENGTH=79,                                  *
+               ATTRB=ASKIP,COLOR=RED
+COMMAND  DFHMDF POS=(24,1),LENGTH=79,                                  *
+               ATTRB=ASKIP,COLOR=NEUTRAL
+***********************************************************************
+         DFHMSD TYPE=FINAL
+         END

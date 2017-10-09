@@ -1,0 +1,311 @@
+      **************************************************************************
+      * CATEGORY.: HPMS CICS PROGRAMS
+      * GROUP....: COBOL
+      * AUTHOR...: LANCE HAYNIE <LANCE@HAYNIEMAIL.COM>
+      * DATE.....: 2017-10-09
+      * PURPOSE..: EDIT/VIEW PROJECT RECORD
+      **************************************************************************
+      * MODIFICATIONS
+      * 2017-10-09 - LHAYNIE - INITIAL VERSION
+      **************************************************************************
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.  HPMSCPM2.
+      **************************************************************************
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  LOCAL-TRAIN-ID               PIC X(4) VALUE 'PM02'.
+       01  MASTER-RECORD-LRECL          PIC S9(4) COMP VALUE 826.
+       01  DATA-RESP-CODE               PIC S9(8) COMP.
+       01  XCTL-RESP-CODE               PIC S9(8) COMP.
+       01  WS-RESPONSE                  PIC S9(8) COMP.
+       01  WS-REASON-CODE               PIC S9(8) COMP.
+       01  X-EIB-MESSAGE.
+           05  FILLER                   PIC X(8) VALUE 'EIBRESP='.
+           05  X-EIB-RESP               PIC 9(10) VALUE 0.
+           05  FILLER                   PIC X(11) VALUE ', EIBRESP2='.
+           05  X-EIB-RESP2              PIC 9(10) VALUE 0.
+           05  FILLER                   PIC X VALUE SPACE.
+           05  X-EIB-USER-MSG           PIC X(38) VALUE SPACES.
+       01  WS-COMMAREA.
+           05  CA-PROJECT-RECORD.
+               10  CA-RECORD-ID         PIC X(6).
+               10  FILLER               PIC X(820).
+       COPY HPMSB05.
+       COPY PROJECTS.
+       COPY DFHAID.
+       COPY DFHBMSCA.
+      **************************************************************************
+       LINKAGE SECTION.
+       01  DFHCOMMAREA.
+           05  LS-PROJECT-RECORD.
+               10  LS-RECORD-ID         PIC X(6).
+               10  FILLER               PIC X(820).
+      **************************************************************************
+       PROCEDURE DIVISION.
+           IF EIBCALEN > ZERO
+               MOVE DFHCOMMAREA TO WS-COMMAREA
+           END-IF.
+
+           PERFORM CLEAR-MESSAGES.
+
+           EXEC CICS HANDLE CONDITION
+                ERROR   (GENERAL-ERROR-ROUTINE)
+                MAPFAIL (MAP-FAIL-ROUTINE)
+                NOTFND  (GENERAL-ERROR-ROUTINE)
+           END-EXEC.
+
+           EVALUATE TRUE
+             WHEN EIBCALEN = ZERO
+                  PERFORM DATA-INITIALIZE-SCREEN-RECORD
+                  PERFORM SCREEN-IO-SEND-UPDATE
+             WHEN EIBAID = DFHCLEAR
+                  PERFORM DATA-INITIALIZE-SCREEN-RECORD
+                  PERFORM SCREEN-IO-SEND-UPDATE
+             WHEN EIBAID = DFHPF3
+                  PERFORM END-OF-PROGRAM
+             WHEN EIBAID = DFHPF5
+                  PERFORM UPDATE-INFORMATION
+             WHEN EIBAID = DFHENTER
+                  PERFORM GET-INFORMATION
+             WHEN OTHER
+                  MOVE "YOU MUST ENTER A RECORD TO LOOKUP
+      -         " TO MSGO
+                  PERFORM RECOVERY-ROUTINE
+             END-EVALUATE.
+             PERFORM END-OF-PROGRAM.
+      **************************************************************************
+       BUILD-HEADER.
+           MOVE 'PROJECT MANAGEMENT' TO TITLE1O.
+           MOVE 'INQUIRY/UPDATE' TO TITLE2O.
+           MOVE 'HPMSCPM2' TO PNAMEO.
+           MOVE 'ENTER=LOOKUP PFKEYS: PF3=EXIT PF5=UPDATE' TO COMMANDO.
+      **************************************************************************
+       PROJECT-READ.
+           EXEC CICS READ
+                DATASET('PROJECTS')
+                INTO(HRD-PROJECT-RECORD)
+                LENGTH(MASTER-RECORD-LRECL)
+                RIDFLD(CA-RECORD-ID)
+                KEYLENGTH(6)
+                RESP(DATA-RESP-CODE)
+           END-EXEC.
+      **************************************************************************
+       PROJECT-READ-UPDATE.
+           EXEC CICS READ
+                DATASET('PROJECTS')
+                INTO(HRD-PROJECT-RECORD)
+                LENGTH(MASTER-RECORD-LRECL)
+                RIDFLD(CA-RECORD-ID)
+                KEYLENGTH(6)
+                UPDATE
+                RESP(DATA-RESP-CODE)
+           END-EXEC.
+      **************************************************************************
+       PROJECT-REWRITE.
+           EXEC CICS REWRITE
+                DATASET('PROJECTS')
+                FROM(HRD-PROJECT-RECORD)
+                LENGTH(MASTER-RECORD-LRECL)
+                RESP(DATA-RESP-CODE)
+           END-EXEC.
+      **************************************************************************
+       CLEAR-MESSAGES.
+           MOVE SPACES TO COMMANDO.
+           MOVE SPACES TO MSGO.
+      **************************************************************************
+       DATA-FILE-TO-SCREEN.
+           MOVE PROJECT-ID TO CA-RECORD-ID.
+           MOVE PROJECT-ID TO IDO.
+           MOVE PROJECT-NAME TO NAMEO.
+           MOVE PROJECT-STATUS TO STATUSO.
+           MOVE PROJECT-OPEN TO OPENO.
+           MOVE PROJECT-PERCENT TO PERCENTO.
+           MOVE PROJECT-START-YEAR TO SYEARO.
+           MOVE PROJECT-START-MONTH TO SMONTHO.
+           MOVE PROJECT-START-DAY TO SDAYO.
+           MOVE PROJECT-END-YEAR TO EYEARO.
+           MOVE PROJECT-END-MONTH TO EMONTHO.
+           MOVE PROJECT-END-DAY TO EDAYO.
+           MOVE PROJECT-STATUS-NOTE-1 TO STATUSNOTE1O.
+           MOVE PROJECT-STATUS-NOTE-2 TO STATUSNOTE2O.
+           MOVE PROJECT-STATUS-NOTE-3 TO STATUSNOTE3O.
+           MOVE PROJECT-STATUS-NOTE-4 TO STATUSNOTE4O.
+           MOVE PROJECT-STATUS-NOTE-5 TO STATUSNOTE5O.
+           MOVE PROJECT-NOTE-1 TO NOTE1O.
+           MOVE PROJECT-NOTE-2 TO NOTE2O.
+           MOVE PROJECT-NOTE-3 TO NOTE3O.
+           MOVE PROJECT-NOTE-4 TO NOTE4O.
+           MOVE PROJECT-NOTE-5 TO NOTE5O.
+           PERFORM BUILD-HEADER.
+      **************************************************************************
+       DATA-INITIALIZE-SCREEN-RECORD.
+           MOVE LOW-VALUES TO PMGMTO.
+           PERFORM BUILD-HEADER.
+      **************************************************************************
+       DATA-SCREEN-TO-FILE.
+           IF NAMEL > 0 THEN MOVE NAMEI TO PROJECT-NAME
+           END-IF.
+           IF STATUSL > 0 THEN MOVE STATUSI TO PROJECT-STATUS
+           END-IF.
+           IF OPENL > 0 THEN MOVE OPENI TO PROJECT-OPEN
+           END-IF.
+           IF PERCENTL > 0 THEN MOVE PERCENTI TO PROJECT-PERCENT
+           END-IF.
+           IF SYEARL > 0 THEN MOVE SYEARI TO PROJECT-START-YEAR
+           END-IF.
+           IF SMONTHL > 0 THEN MOVE SMONTHI TO PROJECT-START-MONTH
+           END-IF.
+           IF SDAYL > 0 THEN MOVE SDAYI TO PROJECT-START-DAY
+           END-IF.
+           IF EYEARL > 0 THEN MOVE EYEARI TO PROJECT-END-YEAR
+           END-IF.
+           IF EMONTHL > 0 THEN MOVE EMONTHI TO PROJECT-END-MONTH
+           END-IF.
+           IF EDAYL > 0 THEN MOVE EDAYI TO PROJECT-END-DAY
+           END-IF.
+           IF STATUSNOTE1L > 0 THEN
+               MOVE STATUSNOTE1I TO PROJECT-STATUS-NOTE-1
+           END-IF.
+           IF STATUSNOTE2L > 0 THEN
+               MOVE STATUSNOTE2I TO PROJECT-STATUS-NOTE-2
+           END-IF.
+           IF STATUSNOTE3L > 0 THEN
+               MOVE STATUSNOTE3I TO PROJECT-STATUS-NOTE-3
+           END-IF.
+           IF STATUSNOTE4L > 0 THEN
+               MOVE STATUSNOTE4I TO PROJECT-STATUS-NOTE-4
+           END-IF.
+           IF STATUSNOTE5L > 0 THEN
+               MOVE STATUSNOTE5I TO PROJECT-STATUS-NOTE-5
+           END-IF.
+           IF NOTE1L > 0 THEN MOVE NOTE1I TO PROJECT-NOTE-1
+           END-IF.
+           IF NOTE2L > 0 THEN MOVE NOTE2I TO PROJECT-NOTE-2
+           END-IF.
+           IF NOTE3L > 0 THEN MOVE NOTE3I TO PROJECT-NOTE-3
+           END-IF.
+           IF NOTE4L > 0 THEN MOVE NOTE4I TO PROJECT-NOTE-4
+           END-IF.
+           IF NOTE5L > 0 THEN MOVE NOTE5I TO PROJECT-NOTE-5
+           END-IF.
+      **************************************************************************
+       END-OF-PROGRAM.
+           EXEC CICS XCTL
+                PROGRAM('HPMSCM06')
+                RESP(XCTL-RESP-CODE)
+           END-EXEC.
+      **************************************************************************
+       GENERAL-ERROR-ROUTINE.
+           MOVE LOW-VALUES TO PMGMTO.
+
+           ADD EIBRESP TO ZERO GIVING X-EIB-RESP.
+           ADD EIBRESP2 TO ZERO GIVING X-EIB-RESP2.
+
+           IF X-EIB-RESP = 0000000012 THEN
+               MOVE "FILE NOT FOUND" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000013 THEN
+               MOVE "RECORD NOT FOUND" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000014 THEN
+               MOVE "DUPLICATE RECORD" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000015 THEN
+               MOVE "DUPLICATE KEY" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000016 THEN
+               MOVE "INVALID RECORD" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000018 THEN
+               MOVE "OUT OF SPACE" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000019 THEN
+               MOVE "FILE NOT OPEN" TO X-EIB-USER-MSG
+           ELSE IF X-EIB-RESP = 0000000022 THEN
+               MOVE "LRECL ERROR" TO X-EIB-USER-MSG
+           ELSE
+               MOVE "GENERAL ERROR" TO X-EIB-USER-MSG
+           END-IF.
+
+           MOVE X-EIB-MESSAGE TO MSGO.
+           PERFORM RECOVERY-ROUTINE.
+      **************************************************************************
+       GET-INFORMATION.
+           PERFORM SCREEN-IO-GET-DATA-FOR-INQUIRY.
+           PERFORM PROJECT-READ.
+           IF DATA-RESP-CODE = ZEROS
+               PERFORM DATA-FILE-TO-SCREEN
+           ELSE
+               PERFORM DATA-INITIALIZE-SCREEN-RECORD
+               MOVE "RECORD NOT FOUND" TO MSGO
+           END-IF.
+           PERFORM SCREEN-IO-SEND-UPDATE.
+      **************************************************************************
+       MAP-FAIL-ROUTINE.
+           MOVE LOW-VALUES TO PMGMTO.
+           MOVE "MAP FAILURE" TO X-EIB-USER-MSG.
+           ADD EIBRESP TO ZERO GIVING X-EIB-RESP.
+           ADD EIBRESP2 TO ZERO GIVING X-EIB-RESP2.
+           MOVE X-EIB-MESSAGE TO MSGO.
+           PERFORM RECOVERY-ROUTINE.
+      **************************************************************************
+       RECOVERY-ROUTINE.
+           MOVE -1 TO IDL.
+           PERFORM SCREEN-IO-SEND-UPDATE.
+      **************************************************************************
+       SCREEN-IO-GET-DATA-FOR-INQUIRY.
+           EXEC CICS RECEIVE
+                MAP    ('PMGMT')
+                MAPSET ('HPMSB05')
+                RESP(WS-RESPONSE)
+                RESP2(WS-REASON-CODE)
+           END-EXEC.
+
+           IF IDL > ZERO
+               MOVE IDI TO CA-RECORD-ID
+           ELSE
+               MOVE LOW-VALUES TO PMGMTO
+               MOVE "PLEASE ENTER 6 DIGIT PROJECT ID" TO MSGO
+               PERFORM RECOVERY-ROUTINE
+           END-IF.
+      **************************************************************************
+       SCREEN-IO-GET-DATA-FOR-UPDATE.
+           EXEC CICS RECEIVE
+                MAP    ('PMGMT')
+                MAPSET ('HPMSB05')
+           END-EXEC.
+      **************************************************************************
+       SCREEN-IO-SEND-UPDATE.
+           PERFORM BUILD-HEADER.
+           EXEC CICS SEND
+                MAP    ('PMGMT')
+                MAPSET ('HPMSB05')
+                ERASE
+           END-EXEC.
+           EXEC CICS RETURN
+                TRANSID  (LOCAL-TRAIN-ID)
+                COMMAREA (WS-COMMAREA)
+           END-EXEC.
+      **************************************************************************
+       TRANSFER-CONTROL.
+           EXEC CICS XCTL
+                PROGRAM('HPMSCM06')
+                RESP(XCTL-RESP-CODE)
+           END-EXEC.
+
+           MOVE "PROGRAM NOT FOUND/ERROR" TO MSGO.
+           MOVE -1 TO IDL.
+           PERFORM RECOVERY-ROUTINE.
+      **************************************************************************
+       UPDATE-INFORMATION.
+           PERFORM SCREEN-IO-GET-DATA-FOR-UPDATE.
+           PERFORM UPDATE-INFORMATION-DATA.
+      **************************************************************************
+       UPDATE-INFORMATION-DATA.
+           PERFORM PROJECT-READ-UPDATE.
+           IF DATA-RESP-CODE NOT = 0
+               PERFORM GENERAL-ERROR-ROUTINE
+           END-IF.
+           PERFORM DATA-SCREEN-TO-FILE.
+           PERFORM PROJECT-REWRITE.
+           IF DATA-RESP-CODE = 0
+               MOVE LOW-VALUES TO PMGMTO
+               MOVE "UPDATE COMPLETED" TO MSGO
+               PERFORM SCREEN-IO-SEND-UPDATE
+           ELSE
+               PERFORM GENERAL-ERROR-ROUTINE
+           END-IF.

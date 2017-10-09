@@ -1,0 +1,14 @@
+//LHAYNIED    JOB (ACCT#),'LANCE HAYNIE',
+//            CLASS=T,NOTIFY=&SYSUID,MSGCLASS=T,REGION=4096K
+//NEWVSAM     EXEC PGM=IDCAMS
+//SYSPRINT    DD SYSOUT=*
+//SYSIN       DD *
+  DEFINE CLUSTER(NAME(HRD.ROCKET.DATA.DEV.GRAIN.INV) -
+  NONINDEXED                                           -
+  VOLUMES(PRV001)                                      -
+  RECSZ(449, 449)                                         -
+  CYL(10,10)                                          -
+  CISZ(4096)                                           -
+  FREESPACE(3 3))                                      -
+  DATA (NAME(HRD.ROCKET.DATA.DEV.GRAIN.INV.DATA))
+/*

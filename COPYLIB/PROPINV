@@ -1,0 +1,21 @@
+       01  HRD-GRAIN-INV-RECORD.
+           05  GRAIN-SERIAL.
+               10  GRAIN-SERIAL-YEAR        PIC 9(4).
+               10  GRAIN-SERIAL-MONTH       PIC 9(2).
+               10  GRAIN-SERIAL-DAY         PIC 9(2).
+               10  GRAIN-SERIAL-HOUR        PIC 9(2).
+               10  GRAIN-SERIAL-MINUTE      PIC 9(2).
+           05  GRAIN-TYPE                   PIC X(10).
+           05  GRAIN-FORMULA                PIC X(15).
+           05  GRAIN-STATUS                 PIC 9(1).
+           05  GRAIN-QA                     PIC X(4).
+           05  GRAIN-QUALITY                PIC 9(2).
+           05  GRAIN-DIAMETER               PIC 9(10).
+           05  GRAIN-LENGTH                 PIC 9(10).
+           05  GRAIN-WEIGHT                 PIC 9(10).
+           05  GRAIN-NOTES.
+               10  GRAIN-NOTE1              PIC X(75).
+               10  GRAIN-NOTE2              PIC X(75).
+               10  GRAIN-NOTE3              PIC X(75).
+               10  GRAIN-NOTE4              PIC X(75).
+               10  GRAIN-NOTE5              PIC X(75).

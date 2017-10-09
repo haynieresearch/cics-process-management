@@ -1,0 +1,26 @@
+       01  HRD-PROJECT-RECORD.
+           05  PROJECT-ID                   PIC 9(6).
+           05  PROJECT-NAME                 PIC X(30).
+           05  PROJECT-STATUS               PIC X(30).
+           05  PROJECT-OPEN                 PIC X(1).
+           05  PROJECT-PERCENT              PIC 9(3).
+           05  PROJECT-START-DATE.
+               10  PROJECT-START-YEAR       PIC 9(4).
+               10  PROJECT-START-MONTH      PIC 9(2).
+               10  PROJECT-START-DAY        PIC 9(2).
+           05  PROJECT-END-DATE.
+               10  PROJECT-END-YEAR         PIC 9(4).
+               10  PROJECT-END-MONTH        PIC 9(2).
+               10  PROJECT-END-DAY          PIC 9(2).
+           05  PROJECT-STATUS-NOTES.
+               10  PROJECT-STATUS-NOTE-1    PIC X(75).
+               10  PROJECT-STATUS-NOTE-2    PIC X(75).
+               10  PROJECT-STATUS-NOTE-3    PIC X(75).
+               10  PROJECT-STATUS-NOTE-4    PIC X(75).
+               10  PROJECT-STATUS-NOTE-5    PIC X(75).
+           05  PROJECT-NOTES.
+               10  PROJECT-NOTE-1           PIC X(75).
+               10  PROJECT-NOTE-2           PIC X(75).
+               10  PROJECT-NOTE-3           PIC X(75).
+               10  PROJECT-NOTE-4           PIC X(75).
+               10  PROJECT-NOTE-5           PIC X(75).

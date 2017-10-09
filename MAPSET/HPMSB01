@@ -1,0 +1,80 @@
+         PRINT NOGEN
+HPMSB01  DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      *
+               CTRL=FREEKB,TERM=3270-2,TIOAPFX=YES,                    *
+               MAPATTS=(COLOR,HILIGHT,VALIDN),                         *
+               DSATTS=(COLOR,HILIGHT,VALIDN)
+***********************************************************************
+*MAIN PROGRAM SCREEN
+MENU     DFHMDI SIZE=(24,80),                                          *
+               COLUMN=1,                                               *
+               LINE=1
+TITLE1   DFHMDF POS=(1,1),LENGTH=70,                                   *
+               INITIAL='HAYNIE RESEARCH AND DEVELOPMENT',              *
+               ATTRB=PROT,COLOR=RED
+PNAME    DFHMDF POS=(1,72),LENGTH=8,                                   *
+               ATTRB=PROT,COLOR=BLUE
+TITLE2   DFHMDF POS=(2,1),LENGTH=70,                                   *
+               INITIAL='PROCESS MANAGEMENT SYSTEM',                    *
+               ATTRB=PROT,COLOR=RED
+TITLE3   DFHMDF POS=(3,1),LENGTH=70,INITIAL='MAIN MENU',               *
+               ATTRB=PROT,COLOR=RED
+         DFHMDF POS=(5,1),LENGTH=30,                                   *
+               INITIAL='SELECT A MENU ACTION OR FKEY:',                *
+               ATTRB=PROT,COLOR=NEUTRAL
+ACTION   DFHMDF POS=(5,32),LENGTH=1,                                   *
+               ATTRB=(NUM,IC),HILIGHT=UNDERLINE
+         DFHMDF POS=(5,34),LENGTH=1,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(6,5),LENGTH=20,INITIAL='OPTION              ',    *
+               ATTRB=PROT,COLOR=NEUTRAL
+         DFHMDF POS=(6,27),LENGTH=21,INITIAL='REMARKS / DESCRIPTION',  *
+               ATTRB=PROT,COLOR=NEUTRAL
+         DFHMDF POS=(7,5),LENGTH=20,INITIAL='--------------------',    *
+               ATTRB=PROT,COLOR=NEUTRAL
+         DFHMDF POS=(7,27),LENGTH=50,                                  *
+               INITIAL='-----------------------------------------------*
+               ---',                                                   *
+               ATTRB=PROT,COLOR=NEUTRAL
+OPTION1  DFHMDF POS=(8,5),LENGTH=20,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=BLUE,OCCURS=1
+DESC1    DFHMDF POS=(8,27),LENGTH=50,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=RED
+OPTION2  DFHMDF POS=(9,5),LENGTH=20,                                   *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=BLUE,OCCURS=1
+DESC2    DFHMDF POS=(9,27),LENGTH=50,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=RED
+OPTION3  DFHMDF POS=(10,5),LENGTH=20,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=BLUE,OCCURS=1
+DESC3    DFHMDF POS=(10,27),LENGTH=50,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=RED
+OPTION4  DFHMDF POS=(11,5),LENGTH=20,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=BLUE,OCCURS=1
+DESC4    DFHMDF POS=(11,27),LENGTH=50,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=RED
+OPTION5  DFHMDF POS=(12,5),LENGTH=20,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=BLUE,OCCURS=1
+DESC5    DFHMDF POS=(12,27),LENGTH=50,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=RED
+OPTION6  DFHMDF POS=(13,5),LENGTH=20,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=BLUE,OCCURS=1
+DESC6    DFHMDF POS=(13,27),LENGTH=50,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=RED
+OPTION7  DFHMDF POS=(14,5),LENGTH=20,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=BLUE,OCCURS=1
+DESC7    DFHMDF POS=(14,27),LENGTH=50,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=RED
+OPTION8  DFHMDF POS=(15,5),LENGTH=20,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=BLUE,OCCURS=1
+DESC8    DFHMDF POS=(15,27),LENGTH=50,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=RED
+OPTION9  DFHMDF POS=(16,5),LENGTH=20,                                  *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=BLUE,OCCURS=1
+DESC9    DFHMDF POS=(16,27),LENGTH=50,                                 *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=RED
+MSG      DFHMDF POS=(23,1),LENGTH=79,                                  *
+               ATTRB=PROT,COLOR=RED
+COMMAND  DFHMDF POS=(24,1),LENGTH=79,                                  *
+               ATTRB=PROT,COLOR=BLUE
+***********************************************************************
+         DFHMSD TYPE=FINAL
+         END

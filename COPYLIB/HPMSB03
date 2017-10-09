@@ -1,0 +1,213 @@
+       01  PINVI.
+           02  FILLER PIC X(12).
+           02  TITLE1L    COMP  PIC  S9(4).
+           02  TITLE1F    PICTURE X.
+           02  FILLER REDEFINES TITLE1F.
+             03 TITLE1A    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  TITLE1I  PIC X(70).
+           02  PNAMEL    COMP  PIC  S9(4).
+           02  PNAMEF    PICTURE X.
+           02  FILLER REDEFINES PNAMEF.
+             03 PNAMEA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  PNAMEI  PIC X(8).
+           02  TITLE2L    COMP  PIC  S9(4).
+           02  TITLE2F    PICTURE X.
+           02  FILLER REDEFINES TITLE2F.
+             03 TITLE2A    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  TITLE2I  PIC X(70).
+           02  SERIALL    COMP  PIC  S9(4).
+           02  SERIALF    PICTURE X.
+           02  FILLER REDEFINES SERIALF.
+             03 SERIALA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  SERIALI  PIC X(12).
+           02  TYPEL    COMP  PIC  S9(4).
+           02  TYPEF    PICTURE X.
+           02  FILLER REDEFINES TYPEF.
+             03 TYPEA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  TYPEI  PIC X(10).
+           02  FORMULAL    COMP  PIC  S9(4).
+           02  FORMULAF    PICTURE X.
+           02  FILLER REDEFINES FORMULAF.
+             03 FORMULAA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  FORMULAI  PIC X(15).
+           02  STATUSL    COMP  PIC  S9(4).
+           02  STATUSF    PICTURE X.
+           02  FILLER REDEFINES STATUSF.
+             03 STATUSA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  STATUSI  PIC X(1).
+           02  QAL    COMP  PIC  S9(4).
+           02  QAF    PICTURE X.
+           02  FILLER REDEFINES QAF.
+             03 QAA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  QAI  PIC X(4).
+           02  QUALITYL    COMP  PIC  S9(4).
+           02  QUALITYF    PICTURE X.
+           02  FILLER REDEFINES QUALITYF.
+             03 QUALITYA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  QUALITYI  PIC X(2).
+           02  DIAMETERL    COMP  PIC  S9(4).
+           02  DIAMETERF    PICTURE X.
+           02  FILLER REDEFINES DIAMETERF.
+             03 DIAMETERA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  DIAMETERI  PIC X(10).
+           02  LENGTHL    COMP  PIC  S9(4).
+           02  LENGTHF    PICTURE X.
+           02  FILLER REDEFINES LENGTHF.
+             03 LENGTHA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  LENGTHI  PIC X(10).
+           02  WEIGHTL    COMP  PIC  S9(4).
+           02  WEIGHTF    PICTURE X.
+           02  FILLER REDEFINES WEIGHTF.
+             03 WEIGHTA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  WEIGHTI  PIC X(10).
+           02  NOTE1L    COMP  PIC  S9(4).
+           02  NOTE1F    PICTURE X.
+           02  FILLER REDEFINES NOTE1F.
+             03 NOTE1A    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  NOTE1I  PIC X(75).
+           02  NOTE2L    COMP  PIC  S9(4).
+           02  NOTE2F    PICTURE X.
+           02  FILLER REDEFINES NOTE2F.
+             03 NOTE2A    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  NOTE2I  PIC X(75).
+           02  NOTE3L    COMP  PIC  S9(4).
+           02  NOTE3F    PICTURE X.
+           02  FILLER REDEFINES NOTE3F.
+             03 NOTE3A    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  NOTE3I  PIC X(75).
+           02  NOTE4L    COMP  PIC  S9(4).
+           02  NOTE4F    PICTURE X.
+           02  FILLER REDEFINES NOTE4F.
+             03 NOTE4A    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  NOTE4I  PIC X(75).
+           02  NOTE5L    COMP  PIC  S9(4).
+           02  NOTE5F    PICTURE X.
+           02  FILLER REDEFINES NOTE5F.
+             03 NOTE5A    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  NOTE5I  PIC X(75).
+           02  MSGL    COMP  PIC  S9(4).
+           02  MSGF    PICTURE X.
+           02  FILLER REDEFINES MSGF.
+             03 MSGA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  MSGI  PIC X(79).
+           02  COMMANDL    COMP  PIC  S9(4).
+           02  COMMANDF    PICTURE X.
+           02  FILLER REDEFINES COMMANDF.
+             03 COMMANDA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  COMMANDI  PIC X(79).
+       01  PINVO REDEFINES PINVI.
+           02  FILLER PIC X(12).
+           02  FILLER PICTURE X(3).
+           02  TITLE1C    PICTURE X.
+           02  TITLE1H    PICTURE X.
+           02  TITLE1V    PICTURE X.
+           02  TITLE1O  PIC X(70).
+           02  FILLER PICTURE X(3).
+           02  PNAMEC    PICTURE X.
+           02  PNAMEH    PICTURE X.
+           02  PNAMEV    PICTURE X.
+           02  PNAMEO  PIC X(8).
+           02  FILLER PICTURE X(3).
+           02  TITLE2C    PICTURE X.
+           02  TITLE2H    PICTURE X.
+           02  TITLE2V    PICTURE X.
+           02  TITLE2O  PIC X(70).
+           02  FILLER PICTURE X(3).
+           02  SERIALC    PICTURE X.
+           02  SERIALH    PICTURE X.
+           02  SERIALV    PICTURE X.
+           02  SERIALO  PIC X(12).
+           02  FILLER PICTURE X(3).
+           02  TYPEC    PICTURE X.
+           02  TYPEH    PICTURE X.
+           02  TYPEV    PICTURE X.
+           02  TYPEO  PIC X(10).
+           02  FILLER PICTURE X(3).
+           02  FORMULAC    PICTURE X.
+           02  FORMULAH    PICTURE X.
+           02  FORMULAV    PICTURE X.
+           02  FORMULAO  PIC X(15).
+           02  FILLER PICTURE X(3).
+           02  STATUSC    PICTURE X.
+           02  STATUSH    PICTURE X.
+           02  STATUSV    PICTURE X.
+           02  STATUSO  PIC X(1).
+           02  FILLER PICTURE X(3).
+           02  QAC    PICTURE X.
+           02  QAH    PICTURE X.
+           02  QAV    PICTURE X.
+           02  QAO  PIC X(4).
+           02  FILLER PICTURE X(3).
+           02  QUALITYC    PICTURE X.
+           02  QUALITYH    PICTURE X.
+           02  QUALITYV    PICTURE X.
+           02  QUALITYO  PIC X(2).
+           02  FILLER PICTURE X(3).
+           02  DIAMETERC    PICTURE X.
+           02  DIAMETERH    PICTURE X.
+           02  DIAMETERV    PICTURE X.
+           02  DIAMETERO  PIC X(10).
+           02  FILLER PICTURE X(3).
+           02  LENGTHC    PICTURE X.
+           02  LENGTHH    PICTURE X.
+           02  LENGTHV    PICTURE X.
+           02  LENGTHO  PIC X(10).
+           02  FILLER PICTURE X(3).
+           02  WEIGHTC    PICTURE X.
+           02  WEIGHTH    PICTURE X.
+           02  WEIGHTV    PICTURE X.
+           02  WEIGHTO  PIC X(10).
+           02  FILLER PICTURE X(3).
+           02  NOTE1C    PICTURE X.
+           02  NOTE1H    PICTURE X.
+           02  NOTE1V    PICTURE X.
+           02  NOTE1O  PIC X(75).
+           02  FILLER PICTURE X(3).
+           02  NOTE2C    PICTURE X.
+           02  NOTE2H    PICTURE X.
+           02  NOTE2V    PICTURE X.
+           02  NOTE2O  PIC X(75).
+           02  FILLER PICTURE X(3).
+           02  NOTE3C    PICTURE X.
+           02  NOTE3H    PICTURE X.
+           02  NOTE3V    PICTURE X.
+           02  NOTE3O  PIC X(75).
+           02  FILLER PICTURE X(3).
+           02  NOTE4C    PICTURE X.
+           02  NOTE4H    PICTURE X.
+           02  NOTE4V    PICTURE X.
+           02  NOTE4O  PIC X(75).
+           02  FILLER PICTURE X(3).
+           02  NOTE5C    PICTURE X.
+           02  NOTE5H    PICTURE X.
+           02  NOTE5V    PICTURE X.
+           02  NOTE5O  PIC X(75).
+           02  FILLER PICTURE X(3).
+           02  MSGC    PICTURE X.
+           02  MSGH    PICTURE X.
+           02  MSGV    PICTURE X.
+           02  MSGO  PIC X(79).
+           02  FILLER PICTURE X(3).
+           02  COMMANDC    PICTURE X.
+           02  COMMANDH    PICTURE X.
+           02  COMMANDV    PICTURE X.
+           02  COMMANDO  PIC X(79).

@@ -1,0 +1,30 @@
+#======================================================================#00010000
+#                      ---COMMON CICS COMMANDS---                      #00020000
+#======================================================================#00030000
+SIGN-ON..............: CESN                                             00040000
+SIGN-OFF.............: CESF                                             00050000
+DEFINITION/ADMIN.....: CEDA                                             00060000
+MASTER TERMINAL......: CEMT                                             00070000
+COMMAND INTERPRETER..: CECI                                             00080000
+TEMP SOTRAGE BROWSER.: CEBR                                             00090000
+DEBUG FACILITY.......: CEDF                                             00100000
+ABEND CODE MESSAGES..: CMAC                                             00110000
+TEST MAP/MAPSET......: CECI SEND MAP(MAP) MAPSET(MAPSET) ERASE FREEKB   00111002
+ADD GROUP TO LIST....: CEDA ADD GROUP(GROUPNAME) LIST(XYZLIST)          00112003
+DISCONNECT USER......: CEMT IN TE; THEN CHANGE "ACQ" TO "REL"
+FILE STATUS..........: CEMT INQ FILE
+SHOW GROUP MEMBERS...: CEDA DIS GROUP(GROUPNAME)
+SHUTDOWN.............: CEMT PER SHUT
+#======================================================================#00120000
+#                     ---CICS INSTALL COMMANDS---                      #00130000
+#======================================================================#00140000
+DEFINE PROGRAM......: CEDA DEF PROG(PGM) GROUP(GRPNAME) LANG(COBOL)     00160000
+INSTALL PROGRAM.....: CEDA INSTALL PROG(PGM) GROUP(GRPNAME)             00170001
+DEFINE TRANSACTION..: CEDA DEF TRANS(ID) GROUP(GRPNAME) PROG(PGMNAME)   00180000
+INSTALL TRANSACTION.: CEDA INSTALL TRANS(ID) GROUP(GRPNAME)             00190001
+DEFINE MAPSET.......: CEDA DEF MAPSET(MAPNAME) GROUP(GRPNAME)           00200000
+INSTALL MAPSET......: CEDA INSTALL MAPSET(MAPNAME) GROUP(GRPNAME)       00210001
+DEFINE DATASET......: CEDA DEF FILE(FILENAME) GROUP(GRPNAME)            00220000
+INSTALL DATASET.....: CEDA INSTALL FILE(FILENAME) GROUP(GRPNAME)        00230001
+INSTALL GROUP.......: CEDA INSTALL GROUP(GRPNAME)                       00240001
+
