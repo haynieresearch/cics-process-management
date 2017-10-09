@@ -110,7 +110,7 @@
            END-EXEC.
            MOVE LOW-VALUES TO MENUO.
            EXEC CICS RETURN
-                TRANSID('TLOG')
+                TRANSID('INCI')
                 COMMAREA(MENUO)
                 RESP(RESPONSE-CODE)
            END-EXEC.

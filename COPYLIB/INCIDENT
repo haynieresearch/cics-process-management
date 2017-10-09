@@ -1,0 +1,24 @@
+       01  HRD-INCIDENT-RECORD.
+           05  INCI-RECORD-ID               PIC 9(6).
+           05  INCI-AUTHOR                  PIC X(28).
+           05  INCI-EMAIL                   PIC X(28).
+           05  INCI-DATE.
+               10  INCI-YEAR                PIC 9(4).
+               10  INCI-MONTH               PIC 9(2).
+               10  INCI-DAY                 PIC 9(2).
+           05  INCI-SUBJECT                 PIC X(66).
+           05  INCI-NOTES.
+               10  INCI-NOTE-1              PIC X(77).
+               10  INCI-NOTE-2              PIC X(77).
+               10  INCI-NOTE-3              PIC X(77).
+               10  INCI-NOTE-4              PIC X(77).
+               10  INCI-NOTE-5              PIC X(77).
+               10  INCI-NOTE-6              PIC X(77).
+               10  INCI-NOTE-7              PIC X(77).
+               10  INCI-NOTE-8              PIC X(77).
+               10  INCI-NOTE-9              PIC X(77).
+               10  INCI-NOTE-10             PIC X(77).
+               10  INCI-NOTE-11             PIC X(77).
+               10  INCI-NOTE-12             PIC X(77).
+               10  INCI-NOTE-13             PIC X(77).
+               10  INCI-NOTE-14             PIC X(77).
