@@ -10,11 +10,11 @@ of questions that are irrelevant. This application should work as is in your dev
 need to do is create the VSAM files and add them to your development region. 
 
 ### Files/Folders
-*COPYLIB - Copybooks
-*INFO - CICS Information
-*JCL - Job Control Language
-*MAPSET - BMS Mapsets
-*SOURCE - CICS COBOL Source
+1. COPYLIB - Copybooks
+2. INFO - CICS Information
+3. JCL - Job Control Language
+4. MAPSET - BMS Mapsets
+5. SOURCE - CICS COBOL Source
 
 ![Screenshot of the Main Menu](https://raw.githubusercontent.com/Haynie-Research-and-Development/process-management/master/SCREENSHOTS/main_menu.png)
 
