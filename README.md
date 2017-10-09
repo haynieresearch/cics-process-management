@@ -9,12 +9,12 @@ I have found most of the "old timers" in the mainframe world are reluctant to an
 of questions that are irrelevant. This application should work as is in your development environment, all you
 need to do is create the VSAM files and add them to your development region. 
 
-I am including in this repository the following files/types:
-COPYLIB - Copybooks
-INFO - CICS Information
-JCL - Job Control Language
-MAPSET - BMS Mapsets
-SOURCE - CICS COBOL Source
+### Files/Folders
+*COPYLIB - Copybooks
+*INFO - CICS Information
+*JCL - Job Control Language
+*MAPSET - BMS Mapsets
+*SOURCE - CICS COBOL Source
 
 ![Screenshot of the Main Menu](https://raw.githubusercontent.com/Haynie-Research-and-Development/process-management/master/SCREENSHOTS/main_menu.png)
 
