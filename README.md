@@ -15,6 +15,10 @@ need to do is create the VSAM files and add them to your development region.
 3. JCL - Job Control Language
 4. MAPSET - BMS Mapsets
 5. SOURCE - CICS COBOL Source
+6. COBOL-COPYLIB - Non CICS Copybooks
+7. COBOL-JCL - Non CICS JCL
+8. COBOL-SOURCE - Non CICS COBOL (Mainly reports on the data stored)
+9. PROD-JCL - Non CICS JCL (Run COBOL reports plus some DFSORT examples)
 
 ![Screenshot of the Main Menu](https://raw.githubusercontent.com/Haynie-Research-and-Development/process-management/master/SCREENSHOTS/main_menu.png)
 
