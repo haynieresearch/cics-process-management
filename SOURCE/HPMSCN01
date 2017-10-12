@@ -2,19 +2,19 @@
       * CATEGORY.: HPMS CICS PROGRAMS
       * GROUP....: COBOL
       * AUTHOR...: LANCE HAYNIE <LANCE@HAYNIEMAIL.COM>
-      * DATE.....: 2017-10-09
-      * PURPOSE..: ADD INCIDENT RECORD
+      * DATE.....: 2017-10-11
+      * PURPOSE..: ADD NOTE RECORD
       **************************************************************************
       * MODIFICATIONS
-      * 2017-10-09 - LHAYNIE - INITIAL VERSION
+      * 2017-10-11 - LHAYNIE - INITIAL VERSION
       **************************************************************************
        IDENTIFICATION DIVISION.
-       PROGRAM-ID.  HPMSCS01.
+       PROGRAM-ID.  HPMSCN01.
       **************************************************************************
        DATA DIVISION.
        WORKING-STORAGE SECTION.
-       01  LOCAL-TRAIN-ID               PIC X(4) VALUE 'SF01'.
-       01  MASTER-RECORD-LRECL          PIC S9(4) COMP VALUE 1214.
+       01  LOCAL-TRAIN-ID               PIC X(4) VALUE 'MN01'.
+       01  MASTER-RECORD-LRECL          PIC S9(4) COMP VALUE 1270.
        01  DATA-RESP-CODE               PIC S9(8) COMP.
        01  XCTL-RESP-CODE               PIC S9(8) COMP.
        01  WS-RESPONSE                  PIC S9(8) COMP.
@@ -27,20 +27,20 @@
            05  FILLER                   PIC X VALUE SPACE.
            05  X-EIB-USER-MSG           PIC X(38) VALUE SPACES.
        01  WS-COMMAREA.
-           05  CA-INCI-RECORD.
+           05  CA-NOTE-RECORD.
                10  CA-RECORD-ID         PIC X(6).
                10  CA-RECORD-ID-N REDEFINES CA-RECORD-ID PIC 9(6).
-               10  FILLER               PIC X(1208).
-       COPY HPMSB06.
-       COPY INCIDENT.
+               10  FILLER               PIC X(1264).
+       COPY HPMSB07.
+       COPY MNOTE.
        COPY DFHAID.
        COPY DFHBMSCA.
       **************************************************************************
        LINKAGE SECTION.
        01  DFHCOMMAREA.
-           05  LS-INCI-RECORD.
+           05  LS-NOTE-RECORD.
                10  LS-RECORD-ID         PIC X(6).
-               10  FILLER               PIC X(1208).
+               10  FILLER               PIC X(1264).
       **************************************************************************
        PROCEDURE DIVISION.
            IF EIBCALEN > ZERO
@@ -75,9 +75,9 @@
              PERFORM END-OF-PROGRAM.
       **************************************************************************
        BUILD-HEADER.
-           MOVE 'INCIDENT REPORTING' TO TITLE1O.
+           MOVE 'MISCELLANEOUS NOTES' TO TITLE1O.
            MOVE 'ADD' TO TITLE2O.
-           MOVE 'HPMSCS01' TO PNAMEO.
+           MOVE 'HPMSCN01' TO PNAMEO.
            MOVE 'PFKEYS: PF3=EXIT PF5=ADD RECORD' TO COMMANDO.
            MOVE DFHBMASK TO IDA.
       **************************************************************************
@@ -86,7 +86,7 @@
            MOVE SPACES TO MSGO.
       **************************************************************************
        MAP-FAIL-ROUTINE.
-           MOVE LOW-VALUES TO INCIO.
+           MOVE LOW-VALUES TO NOTEO.
            PERFORM DATA-INITIALIZE-SCREEN-RECORD.
            MOVE "MAP FAILURE" TO X-EIB-USER-MSG.
            ADD EIBRESP TO ZERO GIVING X-EIB-RESP.
@@ -94,19 +94,19 @@
            MOVE X-EIB-MESSAGE TO MSGO.
            PERFORM SCREEN-IO-SEND-UPDATE.
       **************************************************************************
-       INCI-BUILD-ID.
+       NOTE-BUILD-ID.
            MOVE HIGH-VALUES TO CA-RECORD-ID
 
            EXEC CICS STARTBR
-                FILE('INCIDENT')
+                FILE('MNOTE')
                 RIDFLD(CA-RECORD-ID)
                 KEYLENGTH(6)
                 RESP(DATA-RESP-CODE)
            END-EXEC.
 
            EXEC CICS READPREV
-                FILE('INCIDENT')
-                INTO(HRD-INCIDENT-RECORD)
+                FILE('MNOTE')
+                INTO(HRD-NOTE-RECORD)
                 LENGTH(MASTER-RECORD-LRECL)
                 RIDFLD(CA-RECORD-ID)
                 KEYLENGTH(6)
@@ -116,30 +116,30 @@
            ADD 1 TO CA-RECORD-ID-N.
 
            EXEC CICS ENDBR
-                FILE('INCIDENT')
+                FILE('MNOTE')
            END-EXEC.
 
            MOVE CA-RECORD-ID TO IDO.
       **************************************************************************
-       INCI-WRITE.
+       NOTE-WRITE.
            EXEC CICS WRITE
-                DATASET('INCIDENT')
-                FROM(HRD-INCIDENT-RECORD)
+                DATASET('MNOTE')
+                FROM(HRD-NOTE-RECORD)
                 LENGTH(MASTER-RECORD-LRECL)
                 RIDFLD(CA-RECORD-ID)
                 RESP(DATA-RESP-CODE)
            END-EXEC.
       **************************************************************************
        DATA-INITIALIZE-SCREEN-RECORD.
-           MOVE LOW-VALUES TO INCIO.
-           PERFORM INCI-BUILD-ID.
+           MOVE LOW-VALUES TO NOTEO.
+           PERFORM NOTE-BUILD-ID.
            PERFORM BUILD-HEADER.
       **************************************************************************
        SCREEN-IO-SEND-UPDATE.
            PERFORM BUILD-HEADER.
            EXEC CICS SEND
-                MAP    ('INCI')
-                MAPSET ('HPMSB06')
+                MAP    ('NOTE')
+                MAPSET ('HPMSB07')
                 ERASE
            END-EXEC.
            EXEC CICS RETURN
@@ -148,7 +148,7 @@
            END-EXEC.
       **************************************************************************
        GENERAL-ERROR-ROUTINE.
-           MOVE LOW-VALUES TO INCIO.
+           MOVE LOW-VALUES TO NOTEO.
 
            ADD EIBRESP TO ZERO GIVING X-EIB-RESP.
            ADD EIBRESP2 TO ZERO GIVING X-EIB-RESP2.
@@ -180,32 +180,34 @@
       **************************************************************************
        SCREEN-IO-GET-DATA-FOR-UPDATE.
            EXEC CICS RECEIVE
-                MAP    ('INCI')
-                MAPSET ('HPMSB06')
+                MAP    ('NOTE')
+                MAPSET ('HPMSB07')
            END-EXEC.
       **************************************************************************
        DATA-SCREEN-TO-FILE.
-           MOVE CA-RECORD-ID TO INCI-RECORD-ID.
-           MOVE AUTHORI TO INCI-AUTHOR.
-           MOVE EMAILI TO INCI-EMAIL.
-           MOVE YEARI TO INCI-YEAR.
-           MOVE MONTHI TO INCI-MONTH.
-           MOVE DAYI TO INCI-DAY.
-           MOVE LOCATIONI TO INCI-LOCATION.
-           MOVE NOTE1I TO INCI-NOTE-1.
-           MOVE NOTE2I TO INCI-NOTE-2.
-           MOVE NOTE3I TO INCI-NOTE-3.
-           MOVE NOTE4I TO INCI-NOTE-4.
-           MOVE NOTE5I TO INCI-NOTE-5.
-           MOVE NOTE6I TO INCI-NOTE-6.
-           MOVE NOTE7I TO INCI-NOTE-7.
-           MOVE NOTE8I TO INCI-NOTE-8.
-           MOVE NOTE9I TO INCI-NOTE-9.
-           MOVE NOTE10I TO INCI-NOTE-10.
-           MOVE NOTE11I TO INCI-NOTE-11.
-           MOVE NOTE12I TO INCI-NOTE-12.
-           MOVE NOTE13I TO INCI-NOTE-13.
-           MOVE NOTE14I TO INCI-NOTE-14.
+           MOVE CA-RECORD-ID TO NOTE-RECORD-ID.
+           MOVE CATEGORYI TO NOTE-CATEGORY.
+           MOVE GROUPI TO NOTE-GROUP.
+           MOVE AUTHORI TO NOTE-AUTHOR.
+           MOVE EMAILI TO NOTE-EMAIL.
+           MOVE YEARI TO NOTE-YEAR.
+           MOVE MONTHI TO NOTE-MONTH.
+           MOVE DAYI TO NOTE-DAY.
+           MOVE SUBJECTI TO NOTE-SUBJECT.
+           MOVE NOTE1I TO NOTE-NOTE-1.
+           MOVE NOTE2I TO NOTE-NOTE-2.
+           MOVE NOTE3I TO NOTE-NOTE-3.
+           MOVE NOTE4I TO NOTE-NOTE-4.
+           MOVE NOTE5I TO NOTE-NOTE-5.
+           MOVE NOTE6I TO NOTE-NOTE-6.
+           MOVE NOTE7I TO NOTE-NOTE-7.
+           MOVE NOTE8I TO NOTE-NOTE-8.
+           MOVE NOTE9I TO NOTE-NOTE-9.
+           MOVE NOTE10I TO NOTE-NOTE-10.
+           MOVE NOTE11I TO NOTE-NOTE-11.
+           MOVE NOTE12I TO NOTE-NOTE-12.
+           MOVE NOTE13I TO NOTE-NOTE-13.
+           MOVE NOTE14I TO NOTE-NOTE-14.
       **************************************************************************
        ADD-INFORMATION.
            PERFORM SCREEN-IO-GET-DATA-FOR-UPDATE.
@@ -213,11 +215,11 @@
       **************************************************************************
        ADD-INFORMATION-DATA.
            PERFORM DATA-SCREEN-TO-FILE.
-           PERFORM INCI-WRITE.
+           PERFORM NOTE-WRITE.
 
            IF DATA-RESP-CODE = 0
                PERFORM DATA-INITIALIZE-SCREEN-RECORD
-               MOVE "NEW INCIDENT ADDED" TO MSGO
+               MOVE "NEW NOTE ADDED" TO MSGO
                PERFORM SCREEN-IO-SEND-UPDATE
            ELSE
                PERFORM GENERAL-ERROR-ROUTINE
@@ -225,6 +227,6 @@
       **************************************************************************
        END-OF-PROGRAM.
            EXEC CICS XCTL
-                PROGRAM('HPMSCM04')
+                PROGRAM('HPMSCM07')
                 RESP(XCTL-RESP-CODE)
            END-EXEC.

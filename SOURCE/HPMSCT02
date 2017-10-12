@@ -7,6 +7,8 @@
       **************************************************************************
       * MODIFICATIONS
       * 2017-09-29 - LHAYNIE - INITIAL VERSION
+      * 2017-10-12 - LHAYNIE - ADDED START ON LAST RECORD
+      * 2017-10-12 - LHAYNIE - ADDED NEXT/PREV RECORD FUNCTIONS
       **************************************************************************
        IDENTIFICATION DIVISION.
        PROGRAM-ID.  HPMSCT02.
@@ -29,6 +31,7 @@
        01  WS-COMMAREA.
            05  CA-TLOG-RECORD.
                10  CA-RECORD-ID         PIC X(6).
+               10  CA-RECORD-ID-N REDEFINES CA-RECORD-ID PIC 9(6).
                10  FILLER               PIC X(1264).
        COPY HPMSB02.
        COPY TLOG.
@@ -57,7 +60,7 @@
            EVALUATE TRUE
              WHEN EIBCALEN = ZERO
                   PERFORM DATA-INITIALIZE-SCREEN-RECORD
-                  PERFORM SCREEN-IO-SEND-UPDATE
+                  PERFORM GET-LAST-RECORD
              WHEN EIBAID = DFHCLEAR
                   PERFORM DATA-INITIALIZE-SCREEN-RECORD
                   PERFORM SCREEN-IO-SEND-UPDATE
@@ -65,6 +68,12 @@
                   PERFORM END-OF-PROGRAM
              WHEN EIBAID = DFHPF5
                   PERFORM UPDATE-INFORMATION
+             WHEN EIBAID = DFHPF7
+                  PERFORM DATA-INITIALIZE-SCREEN-RECORD
+                  PERFORM GET-PREV-RECORD
+             WHEN EIBAID = DFHPF8
+                  PERFORM DATA-INITIALIZE-SCREEN-RECORD
+                  PERFORM GET-NEXT-RECORD
              WHEN EIBAID = DFHENTER
                   PERFORM GET-INFORMATION
              WHEN OTHER
@@ -78,7 +87,121 @@
            MOVE 'TEST AND EXPERIMENT LOG' TO TITLE1O.
            MOVE 'INQUIRY/UPDATE' TO TITLE2O.
            MOVE 'HPMSCT02' TO PNAMEO.
-           MOVE 'ENTER=LOOKUP PFKEYS: PF3=EXIT PF5=UPDATE' TO COMMANDO.
+           MOVE 'ENTER=LOOKUP PFKEYS: PF3=EXIT PF5=UPDATE PF7=PREV RECOR
+      -'D PF8=NEXT RECORD' TO COMMANDO.
+      **************************************************************************
+       GET-LAST-RECORD.
+           MOVE HIGH-VALUES TO CA-RECORD-ID
+
+           EXEC CICS STARTBR
+                FILE('TLOG')
+                RIDFLD(CA-RECORD-ID)
+                KEYLENGTH(6)
+                RESP(DATA-RESP-CODE)
+           END-EXEC.
+
+           EXEC CICS READPREV
+                FILE('TLOG')
+                INTO(HRD-TEST-TRACKING-RECORD)
+                LENGTH(MASTER-RECORD-LRECL)
+                RIDFLD(CA-RECORD-ID)
+                KEYLENGTH(6)
+                RESP(DATA-RESP-CODE)
+           END-EXEC.
+
+           EXEC CICS ENDBR
+                FILE('TLOG')
+           END-EXEC.
+
+           IF DATA-RESP-CODE = ZEROS
+               PERFORM DATA-FILE-TO-SCREEN
+           ELSE
+               PERFORM DATA-INITIALIZE-SCREEN-RECORD
+               MOVE "RECORD NOT FOUND" TO MSGO
+           END-IF.
+           PERFORM SCREEN-IO-SEND-UPDATE.
+      **************************************************************************
+       GET-PREV-RECORD.
+           EXEC CICS STARTBR
+                FILE('TLOG')
+                RIDFLD(CA-RECORD-ID)
+                KEYLENGTH(6)
+                RESP(DATA-RESP-CODE)
+           END-EXEC.
+
+           EXEC CICS READPREV
+                FILE('TLOG')
+                INTO(HRD-TEST-TRACKING-RECORD)
+                LENGTH(MASTER-RECORD-LRECL)
+                RIDFLD(CA-RECORD-ID)
+                KEYLENGTH(6)
+                RESP(DATA-RESP-CODE)
+           END-EXEC.
+
+           EXEC CICS READPREV
+                FILE('TLOG')
+                INTO(HRD-TEST-TRACKING-RECORD)
+                LENGTH(MASTER-RECORD-LRECL)
+                RIDFLD(CA-RECORD-ID)
+                KEYLENGTH(6)
+                RESP(DATA-RESP-CODE)
+           END-EXEC.
+
+           EXEC CICS ENDBR
+                FILE('TLOG')
+           END-EXEC.
+
+           IF DATA-RESP-CODE = ZEROS
+               PERFORM DATA-FILE-TO-SCREEN
+           ELSE IF DATA-RESP-CODE = 20
+               MOVE "NOTE: THIS IS THE FIRST RECORD..." TO MSGO
+               PERFORM DATA-FILE-TO-SCREEN
+           ELSE
+               PERFORM DATA-INITIALIZE-SCREEN-RECORD
+               MOVE "RECORD NOT FOUND" TO MSGO
+           END-IF.
+           PERFORM SCREEN-IO-SEND-UPDATE.
+      **************************************************************************
+       GET-NEXT-RECORD.
+           EXEC CICS STARTBR
+                FILE('TLOG')
+                RIDFLD(CA-RECORD-ID)
+                KEYLENGTH(6)
+                RESP(DATA-RESP-CODE)
+           END-EXEC.
+
+           EXEC CICS READNEXT
+                FILE('TLOG')
+                INTO(HRD-TEST-TRACKING-RECORD)
+                LENGTH(MASTER-RECORD-LRECL)
+                RIDFLD(CA-RECORD-ID)
+                KEYLENGTH(6)
+                RESP(DATA-RESP-CODE)
+           END-EXEC.
+
+           EXEC CICS READNEXT
+                FILE('TLOG')
+                INTO(HRD-TEST-TRACKING-RECORD)
+                LENGTH(MASTER-RECORD-LRECL)
+                RIDFLD(CA-RECORD-ID)
+                KEYLENGTH(6)
+                RESP(DATA-RESP-CODE)
+           END-EXEC.
+
+           EXEC CICS ENDBR
+                FILE('TLOG')
+           END-EXEC.
+
+           IF DATA-RESP-CODE = ZEROS
+               PERFORM DATA-FILE-TO-SCREEN
+           ELSE IF DATA-RESP-CODE = 20
+               MOVE "NOTE: THIS IS THE LAST RECORD..." TO MSGO
+               PERFORM DATA-FILE-TO-SCREEN
+           ELSE
+               PERFORM DATA-INITIALIZE-SCREEN-RECORD
+               MOVE "RECORD NOT FOUND" TO MSGO
+           END-IF.
+           PERFORM SCREEN-IO-SEND-UPDATE.
       **************************************************************************
        TLOG-READ.
            EXEC CICS READ

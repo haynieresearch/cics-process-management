@@ -6,7 +6,7 @@
                10  INCI-YEAR                PIC 9(4).
                10  INCI-MONTH               PIC 9(2).
                10  INCI-DAY                 PIC 9(2).
-           05  INCI-SUBJECT                 PIC X(66).
+           05  INCI-LOCATION                PIC X(66).
            05  INCI-NOTES.
                10  INCI-NOTE-1              PIC X(77).
                10  INCI-NOTE-2              PIC X(77).

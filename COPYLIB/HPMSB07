@@ -1,4 +1,4 @@
-       01  INCII.
+       01  NOTEI.
            02  FILLER PIC X(12).
            02  TITLE1L    COMP  PIC  S9(4).
            02  TITLE1F    PICTURE X.
@@ -24,6 +24,18 @@
              03 IDA    PICTURE X.
            02  FILLER   PICTURE X(3).
            02  IDI  PIC X(6).
+           02  CATEGORYL    COMP  PIC  S9(4).
+           02  CATEGORYF    PICTURE X.
+           02  FILLER REDEFINES CATEGORYF.
+             03 CATEGORYA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  CATEGORYI  PIC X(28).
+           02  GROUPL    COMP  PIC  S9(4).
+           02  GROUPF    PICTURE X.
+           02  FILLER REDEFINES GROUPF.
+             03 GROUPA    PICTURE X.
+           02  FILLER   PICTURE X(3).
+           02  GROUPI  PIC X(28).
            02  AUTHORL    COMP  PIC  S9(4).
            02  AUTHORF    PICTURE X.
            02  FILLER REDEFINES AUTHORF.
@@ -54,12 +66,12 @@
              03 DAYA    PICTURE X.
            02  FILLER   PICTURE X(3).
            02  DAYI  PIC X(2).
-           02  LOCATIONL    COMP  PIC  S9(4).
-           02  LOCATIONF    PICTURE X.
-           02  FILLER REDEFINES LOCATIONF.
-             03 LOCATIONA    PICTURE X.
+           02  SUBJECTL    COMP  PIC  S9(4).
+           02  SUBJECTF    PICTURE X.
+           02  FILLER REDEFINES SUBJECTF.
+             03 SUBJECTA    PICTURE X.
            02  FILLER   PICTURE X(3).
-           02  LOCATIONI  PIC X(66).
+           02  SUBJECTI  PIC X(66).
            02  NOTE1L    COMP  PIC  S9(4).
            02  NOTE1F    PICTURE X.
            02  FILLER REDEFINES NOTE1F.
@@ -156,7 +168,7 @@
              03 COMMANDA    PICTURE X.
            02  FILLER   PICTURE X(3).
            02  COMMANDI  PIC X(79).
-       01  INCIO REDEFINES INCII.
+       01  NOTEO REDEFINES NOTEI.
            02  FILLER PIC X(12).
            02  FILLER PICTURE X(3).
            02  TITLE1C    PICTURE X.
@@ -178,6 +190,16 @@
            02  IDH    PICTURE X.
            02  IDV    PICTURE X.
            02  IDO  PIC X(6).
+           02  FILLER PICTURE X(3).
+           02  CATEGORYC    PICTURE X.
+           02  CATEGORYH    PICTURE X.
+           02  CATEGORYV    PICTURE X.
+           02  CATEGORYO  PIC X(28).
+           02  FILLER PICTURE X(3).
+           02  GROUPC    PICTURE X.
+           02  GROUPH    PICTURE X.
+           02  GROUPV    PICTURE X.
+           02  GROUPO  PIC X(28).
            02  FILLER PICTURE X(3).
            02  AUTHORC    PICTURE X.
            02  AUTHORH    PICTURE X.
@@ -204,10 +226,10 @@
            02  DAYV    PICTURE X.
            02  DAYO  PIC X(2).
            02  FILLER PICTURE X(3).
-           02  LOCATIONC    PICTURE X.
-           02  LOCATIONH    PICTURE X.
-           02  LOCATIONV    PICTURE X.
-           02  LOCATIONO  PIC X(66).
+           02  SUBJECTC    PICTURE X.
+           02  SUBJECTH    PICTURE X.
+           02  SUBJECTV    PICTURE X.
+           02  SUBJECTO  PIC X(66).
            02  FILLER PICTURE X(3).
            02  NOTE1C    PICTURE X.
            02  NOTE1H    PICTURE X.

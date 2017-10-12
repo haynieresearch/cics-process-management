@@ -1,0 +1,26 @@
+       01  HRD-NOTE-RECORD.
+           05  NOTE-RECORD-ID               PIC 9(6).
+           05  NOTE-CATEGORY                PIC X(28).
+           05  NOTE-GROUP                   PIC X(28).
+           05  NOTE-AUTHOR                  PIC X(28).
+           05  NOTE-EMAIL                   PIC X(28).
+           05  NOTE-DATE.
+               10  NOTE-YEAR                PIC 9(4).
+               10  NOTE-MONTH               PIC 9(2).
+               10  NOTE-DAY                 PIC 9(2).
+           05  NOTE-SUBJECT                 PIC X(66).
+           05  NOTE-NOTES.
+               10  NOTE-NOTE-1              PIC X(77).
+               10  NOTE-NOTE-2              PIC X(77).
+               10  NOTE-NOTE-3              PIC X(77).
+               10  NOTE-NOTE-4              PIC X(77).
+               10  NOTE-NOTE-5              PIC X(77).
+               10  NOTE-NOTE-6              PIC X(77).
+               10  NOTE-NOTE-7              PIC X(77).
+               10  NOTE-NOTE-8              PIC X(77).
+               10  NOTE-NOTE-9              PIC X(77).
+               10  NOTE-NOTE-10             PIC X(77).
+               10  NOTE-NOTE-11             PIC X(77).
+               10  NOTE-NOTE-12             PIC X(77).
+               10  NOTE-NOTE-13             PIC X(77).
+               10  NOTE-NOTE-14             PIC X(77).

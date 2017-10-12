@@ -2,14 +2,14 @@
       * CATEGORY.: HPMS CICS PROGRAMS
       * GROUP....: COBOL
       * AUTHOR...: LANCE HAYNIE <LANCE@HAYNIEMAIL.COM>
-      * DATE.....: 2017-10-02
-      * PURPOSE..: HPMS MAIN MENU
+      * DATE.....: 2017-10-11
+      * PURPOSE..: MNOTE MAIN MENU
       **************************************************************************
       * MODIFICATIONS
-      * 2017-10-02 - LHAYNIE - INITIAL VERSION
+      * 2017-10-11 - LHAYNIE - INITIAL VERSION
       **************************************************************************
        IDENTIFICATION DIVISION.
-       PROGRAM-ID.  HPMSCM01.
+       PROGRAM-ID.  HPMSCM07.
       **************************************************************************
        DATA DIVISION.
        WORKING-STORAGE SECTION.
@@ -17,17 +17,10 @@
            05  VALID-DATA-SW                 PIC X.
        01  PROGRAM-TABLE.
            05  PROGRAM-LIST.
-               10  PROGRAM-1                 PIC X(8) VALUE 'HPMSCM02'.
-               10  PROGRAM-2                 PIC X(8) VALUE 'HPMSCM03'.
-               10  PROGRAM-3                 PIC X(8) VALUE 'HPMSCM04'.
-               10  PROGRAM-4                 PIC X(8) VALUE 'HPMSCM05'.
-               10  PROGRAM-5                 PIC X(8) VALUE 'HPMSCM06'.
-               10  PROGRAM-6                 PIC X(8) VALUE 'HPMSCM10'.
-               10  PROGRAM-7                 PIC X(8) VALUE 'HPMSCM08'.
-               10  PROGRAM-8                 PIC X(8) VALUE 'HPMSCM09'.
-               10  PROGRAM-9                 PIC X(8) VALUE 'HPMSCM07'.
+               10  PROGRAM-1                 PIC X(8) VALUE 'HPMSCN01'.
+               10  PROGRAM-2                 PIC X(8) VALUE 'HPMSCN02'.
            05  PROGRAM-NAME REDEFINES PROGRAM-LIST
-                 OCCURS 4 TIMES
+                 OCCURS 2 TIMES
                                              PIC X(8).
        01  SUBSCRIPTS.
            05  ACTION-SUB                    PIC 9.
@@ -48,13 +41,18 @@
                WHEN EIBAID = DFHCLEAR
                    MOVE LOW-VALUES TO MENUO
                    PERFORM SEND-MENU-MAP
+               WHEN EIBAID = DFHPF3
+                   EXEC CICS
+                       XCTL PROGRAM ('HPMSCM01')
+                            RESP(RESPONSE-CODE)
+                   END-EXEC
                WHEN EIBAID = DFHPF12
                    PERFORM END-OF-PROGRAM
                WHEN EIBAID = DFHENTER
                    PERFORM PROCESS-MENU-MAP
                WHEN OTHER
                    MOVE LOW-VALUES TO MENUO
-                   MOVE 'INVALID KEY PRESSED...' TO MSGO
+                   MOVE 'INVALID KEY PRESSED' TO MSGO
                    PERFORM SEND-MENU-MAP
            END-EVALUATE.
            PERFORM END-OF-PROGRAM.
@@ -70,28 +68,15 @@
       **************************************************************************
        PREPARE-MENU.
            MOVE "HAYNIE RESEARCH AND DEVELOPMENT" TO TITLE1O.
-           MOVE "HPMSCM01" TO PNAMEO.
-           MOVE "PROCESS MANAGEMENT SYSTEM" TO TITLE2O.
+           MOVE "HPMSCM07" TO PNAMEO.
+           MOVE "MISCELLANEOUS NOTES" TO TITLE2O.
            MOVE "MAIN MENU" TO TITLE3O.
-           MOVE "1  TEST LOG" TO OPTION1O.
-           MOVE "TEST AND EXPERIMENT LOG" TO DESC1O.
-           MOVE "2  PROPELLANT INV" TO OPTION2O.
-           MOVE "PROPELLANT GRAIN INVENTORY" TO DESC2O.
-           MOVE "3  INCIDENT" TO OPTION3O.
-           MOVE "INCIDENT REPORTING" TO DESC3O.
-           MOVE "4  INVENTORY" TO OPTION4O.
-           MOVE "INVENTORY MANAGEMENT" TO DESC4O.
-           MOVE "5  PROJECTS" TO OPTION5O.
-           MOVE "PROJECT MANAGEMENT" TO DESC5O.
-           MOVE "6  ACCOUNTING" TO OPTION6O.
-           MOVE "ACCOUNTING & GENERAL LEDGER" TO DESC6O.
-           MOVE "7  CRM" TO OPTION7O.
-           MOVE "CUSTOMER DATABASE" TO DESC7O.
-           MOVE "8  CMMS" TO OPTION8O.
-           MOVE "WORK ORDERS" TO DESC8O.
-           MOVE "9  NOTES" TO OPTION9O.
-           MOVE "MISC NOTES" TO DESC9O.
-           MOVE "PF KEYS: PF12=EXIT APPLICATION" TO COMMANDO.
+           MOVE "1  NEW NOTE" TO OPTION1O.
+           MOVE "RECORD NEW NOTE" TO DESC1O.
+           MOVE "2  NOTE INQUIRY" TO OPTION2O.
+           MOVE "NOTE INQUIRY/UPDATE BY RECORD ID" TO DESC2O.
+           MOVE "PF KEYS: PF3=MAIN MENU PF12=EXIT APPLICATION           DO.
+      -         " TO COMMANDO.
       **************************************************************************
        RECEIVE-MENU-MAP.
            EXEC CICS
@@ -125,7 +110,7 @@
            END-EXEC.
            MOVE LOW-VALUES TO MENUO.
            EXEC CICS RETURN
-                TRANSID('HPMS')
+                TRANSID('NOTE')
                 COMMAREA(MENUO)
                 RESP(RESPONSE-CODE)
            END-EXEC.

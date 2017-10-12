@@ -2,21 +2,21 @@
       * CATEGORY.: HPMS CICS PROGRAMS
       * GROUP....: COBOL
       * AUTHOR...: LANCE HAYNIE <LANCE@HAYNIEMAIL.COM>
-      * DATE.....: 2017-10-09
-      * PURPOSE..: EDIT/VIEW PROJECT RECORD
+      * DATE.....: 2017-10-11
+      * PURPOSE..: EDIT/VIEW NOTE RECORD
       **************************************************************************
       * MODIFICATIONS
-      * 2017-10-09 - LHAYNIE - INITIAL VERSION
+      * 2017-10-11 - LHAYNIE - INITIAL VERSION
       * 2017-10-12 - LHAYNIE - ADDED START ON LAST RECORD
       * 2017-10-12 - LHAYNIE - ADDED NEXT/PREV RECORD FUNCTIONS
       **************************************************************************
        IDENTIFICATION DIVISION.
-       PROGRAM-ID.  HPMSCPM2.
+       PROGRAM-ID.  HPMSCN02.
       **************************************************************************
        DATA DIVISION.
        WORKING-STORAGE SECTION.
-       01  LOCAL-TRAIN-ID               PIC X(4) VALUE 'PM02'.
-       01  MASTER-RECORD-LRECL          PIC S9(4) COMP VALUE 826.
+       01  LOCAL-TRAIN-ID               PIC X(4) VALUE 'MN02'.
+       01  MASTER-RECORD-LRECL          PIC S9(4) COMP VALUE 1270.
        01  DATA-RESP-CODE               PIC S9(8) COMP.
        01  XCTL-RESP-CODE               PIC S9(8) COMP.
        01  WS-RESPONSE                  PIC S9(8) COMP.
@@ -29,20 +29,20 @@
            05  FILLER                   PIC X VALUE SPACE.
            05  X-EIB-USER-MSG           PIC X(38) VALUE SPACES.
        01  WS-COMMAREA.
-           05  CA-PROJECT-RECORD.
+           05  CA-NOTE-RECORD.
                10  CA-RECORD-ID         PIC X(6).
                10  CA-RECORD-ID-N REDEFINES CA-RECORD-ID PIC 9(6).
-               10  FILLER               PIC X(820).
-       COPY HPMSB05.
-       COPY PROJECTS.
+               10  FILLER               PIC X(1264).
+       COPY HPMSB07.
+       COPY MNOTE.
        COPY DFHAID.
        COPY DFHBMSCA.
       **************************************************************************
        LINKAGE SECTION.
        01  DFHCOMMAREA.
-           05  LS-PROJECT-RECORD.
+           05  LS-NOTE-RECORD.
                10  LS-RECORD-ID         PIC X(6).
-               10  FILLER               PIC X(820).
+               10  FILLER               PIC X(1264).
       **************************************************************************
        PROCEDURE DIVISION.
            IF EIBCALEN > ZERO
@@ -84,9 +84,9 @@
              PERFORM END-OF-PROGRAM.
       **************************************************************************
        BUILD-HEADER.
-           MOVE 'PROJECT MANAGEMENT' TO TITLE1O.
+           MOVE 'MISCELLANEOUS NOTES' TO TITLE1O.
            MOVE 'INQUIRY/UPDATE' TO TITLE2O.
-           MOVE 'HPMSCPM2' TO PNAMEO.
+           MOVE 'HPMSCN02' TO PNAMEO.
            MOVE 'ENTER=LOOKUP PFKEYS: PF3=EXIT PF5=UPDATE PF7=PREV RECOR
       -'D PF8=NEXT RECORD' TO COMMANDO.
       **************************************************************************
@@ -94,15 +94,15 @@
            MOVE HIGH-VALUES TO CA-RECORD-ID
 
            EXEC CICS STARTBR
-                FILE('PROJECTS')
+                FILE('MNOTE')
                 RIDFLD(CA-RECORD-ID)
                 KEYLENGTH(6)
                 RESP(DATA-RESP-CODE)
            END-EXEC.
 
            EXEC CICS READPREV
-                FILE('PROJECTS')
-                INTO(HRD-PROJECT-RECORD)
+                FILE('MNOTE')
+                INTO(HRD-NOTE-RECORD)
                 LENGTH(MASTER-RECORD-LRECL)
                 RIDFLD(CA-RECORD-ID)
                 KEYLENGTH(6)
@@ -110,7 +110,7 @@
            END-EXEC.
 
            EXEC CICS ENDBR
-                FILE('PROJECTS')
+                FILE('MNOTE')
            END-EXEC.
 
            IF DATA-RESP-CODE = ZEROS
@@ -123,15 +123,15 @@
       **************************************************************************
        GET-PREV-RECORD.
            EXEC CICS STARTBR
-                FILE('PROJECTS')
+                FILE('MNOTE')
                 RIDFLD(CA-RECORD-ID)
                 KEYLENGTH(6)
                 RESP(DATA-RESP-CODE)
            END-EXEC.
 
            EXEC CICS READPREV
-                FILE('PROJECTS')
-                INTO(HRD-PROJECT-RECORD)
+                FILE('MNOTE')
+                INTO(HRD-NOTE-RECORD)
                 LENGTH(MASTER-RECORD-LRECL)
                 RIDFLD(CA-RECORD-ID)
                 KEYLENGTH(6)
@@ -139,8 +139,8 @@
            END-EXEC.
 
            EXEC CICS READPREV
-                FILE('PROJECTS')
-                INTO(HRD-PROJECT-RECORD)
+                FILE('MNOTE')
+                INTO(HRD-NOTE-RECORD)
                 LENGTH(MASTER-RECORD-LRECL)
                 RIDFLD(CA-RECORD-ID)
                 KEYLENGTH(6)
@@ -148,7 +148,7 @@
            END-EXEC.
 
            EXEC CICS ENDBR
-                FILE('PROJECTS')
+                FILE('MNOTE')
            END-EXEC.
 
            IF DATA-RESP-CODE = ZEROS
@@ -164,15 +164,15 @@
       **************************************************************************
        GET-NEXT-RECORD.
            EXEC CICS STARTBR
-                FILE('PROJECTS')
+                FILE('MNOTE')
                 RIDFLD(CA-RECORD-ID)
                 KEYLENGTH(6)
                 RESP(DATA-RESP-CODE)
            END-EXEC.
 
            EXEC CICS READNEXT
-                FILE('PROJECTS')
-                INTO(HRD-PROJECT-RECORD)
+                FILE('MNOTE')
+                INTO(HRD-NOTE-RECORD)
                 LENGTH(MASTER-RECORD-LRECL)
                 RIDFLD(CA-RECORD-ID)
                 KEYLENGTH(6)
@@ -180,8 +180,8 @@
            END-EXEC.
 
            EXEC CICS READNEXT
-                FILE('PROJECTS')
-                INTO(HRD-PROJECT-RECORD)
+                FILE('MNOTE')
+                INTO(HRD-NOTE-RECORD)
                 LENGTH(MASTER-RECORD-LRECL)
                 RIDFLD(CA-RECORD-ID)
                 KEYLENGTH(6)
@@ -189,7 +189,7 @@
            END-EXEC.
 
            EXEC CICS ENDBR
-                FILE('PROJECTS')
+                FILE('MNOTE')
            END-EXEC.
 
            IF DATA-RESP-CODE = ZEROS
@@ -203,20 +203,20 @@
            END-IF.
            PERFORM SCREEN-IO-SEND-UPDATE.
       **************************************************************************
-       PROJECT-READ.
+       NOTE-READ.
            EXEC CICS READ
-                DATASET('PROJECTS')
-                INTO(HRD-PROJECT-RECORD)
+                DATASET('MNOTE')
+                INTO(HRD-NOTE-RECORD)
                 LENGTH(MASTER-RECORD-LRECL)
                 RIDFLD(CA-RECORD-ID)
                 KEYLENGTH(6)
                 RESP(DATA-RESP-CODE)
            END-EXEC.
       **************************************************************************
-       PROJECT-READ-UPDATE.
+       NOTE-READ-UPDATE.
            EXEC CICS READ
-                DATASET('PROJECTS')
-                INTO(HRD-PROJECT-RECORD)
+                DATASET('MNOTE')
+                INTO(HRD-NOTE-RECORD)
                 LENGTH(MASTER-RECORD-LRECL)
                 RIDFLD(CA-RECORD-ID)
                 KEYLENGTH(6)
@@ -224,10 +224,10 @@
                 RESP(DATA-RESP-CODE)
            END-EXEC.
       **************************************************************************
-       PROJECT-REWRITE.
+       NOTE-REWRITE.
            EXEC CICS REWRITE
-                DATASET('PROJECTS')
-                FROM(HRD-PROJECT-RECORD)
+                DATASET('MNOTE')
+                FROM(HRD-NOTE-RECORD)
                 LENGTH(MASTER-RECORD-LRECL)
                 RESP(DATA-RESP-CODE)
            END-EXEC.
@@ -237,89 +237,90 @@
            MOVE SPACES TO MSGO.
       **************************************************************************
        DATA-FILE-TO-SCREEN.
-           MOVE PROJECT-ID TO CA-RECORD-ID.
-           MOVE PROJECT-ID TO IDO.
-           MOVE PROJECT-NAME TO NAMEO.
-           MOVE PROJECT-STATUS TO STATUSO.
-           MOVE PROJECT-OPEN TO OPENO.
-           MOVE PROJECT-PERCENT TO PERCENTO.
-           MOVE PROJECT-START-YEAR TO SYEARO.
-           MOVE PROJECT-START-MONTH TO SMONTHO.
-           MOVE PROJECT-START-DAY TO SDAYO.
-           MOVE PROJECT-END-YEAR TO EYEARO.
-           MOVE PROJECT-END-MONTH TO EMONTHO.
-           MOVE PROJECT-END-DAY TO EDAYO.
-           MOVE PROJECT-STATUS-NOTE-1 TO STATUSNOTE1O.
-           MOVE PROJECT-STATUS-NOTE-2 TO STATUSNOTE2O.
-           MOVE PROJECT-STATUS-NOTE-3 TO STATUSNOTE3O.
-           MOVE PROJECT-STATUS-NOTE-4 TO STATUSNOTE4O.
-           MOVE PROJECT-STATUS-NOTE-5 TO STATUSNOTE5O.
-           MOVE PROJECT-NOTE-1 TO NOTE1O.
-           MOVE PROJECT-NOTE-2 TO NOTE2O.
-           MOVE PROJECT-NOTE-3 TO NOTE3O.
-           MOVE PROJECT-NOTE-4 TO NOTE4O.
-           MOVE PROJECT-NOTE-5 TO NOTE5O.
+           MOVE NOTE-RECORD-ID TO CA-RECORD-ID.
+           MOVE NOTE-RECORD-ID TO IDO.
+           MOVE NOTE-CATEGORY TO CATEGORYO.
+           MOVE NOTE-GROUP TO GROUPO.
+           MOVE NOTE-AUTHOR TO AUTHORO.
+           MOVE NOTE-EMAIL TO EMAILO.
+           MOVE NOTE-YEAR TO YEARO.
+           MOVE NOTE-MONTH TO MONTHO.
+           MOVE NOTE-DAY TO DAYO.
+           MOVE NOTE-SUBJECT TO SUBJECTO.
+           MOVE NOTE-NOTE-1 TO NOTE1O.
+           MOVE NOTE-NOTE-2 TO NOTE2O.
+           MOVE NOTE-NOTE-3 TO NOTE3O.
+           MOVE NOTE-NOTE-4 TO NOTE4O.
+           MOVE NOTE-NOTE-5 TO NOTE5O.
+           MOVE NOTE-NOTE-6 TO NOTE6O.
+           MOVE NOTE-NOTE-7 TO NOTE7O.
+           MOVE NOTE-NOTE-8 TO NOTE8O.
+           MOVE NOTE-NOTE-9 TO NOTE9O.
+           MOVE NOTE-NOTE-10 TO NOTE10O.
+           MOVE NOTE-NOTE-11 TO NOTE11O.
+           MOVE NOTE-NOTE-12 TO NOTE12O.
+           MOVE NOTE-NOTE-13 TO NOTE13O.
+           MOVE NOTE-NOTE-14 TO NOTE14O.
            PERFORM BUILD-HEADER.
       **************************************************************************
        DATA-INITIALIZE-SCREEN-RECORD.
-           MOVE LOW-VALUES TO PMGMTO.
+           MOVE LOW-VALUES TO NOTEO.
            PERFORM BUILD-HEADER.
       **************************************************************************
        DATA-SCREEN-TO-FILE.
-           IF NAMEL > 0 THEN MOVE NAMEI TO PROJECT-NAME
+           IF CATEGORYL > 0 THEN MOVE CATEGORYI TO NOTE-CATEGORY
            END-IF.
-           IF STATUSL > 0 THEN MOVE STATUSI TO PROJECT-STATUS
+           IF GROUPL > 0 THEN MOVE GROUPI TO NOTE-GROUP
            END-IF.
-           IF OPENL > 0 THEN MOVE OPENI TO PROJECT-OPEN
+           IF AUTHORL > 0 THEN MOVE AUTHORI TO NOTE-AUTHOR
            END-IF.
-           IF PERCENTL > 0 THEN MOVE PERCENTI TO PROJECT-PERCENT
+           IF EMAILL > 0 THEN MOVE EMAILI TO NOTE-EMAIL
            END-IF.
-           IF SYEARL > 0 THEN MOVE SYEARI TO PROJECT-START-YEAR
+           IF YEARL > 0 THEN MOVE YEARI TO NOTE-YEAR
            END-IF.
-           IF SMONTHL > 0 THEN MOVE SMONTHI TO PROJECT-START-MONTH
+           IF MONTHL > 0 THEN MOVE MONTHI TO NOTE-MONTH
            END-IF.
-           IF SDAYL > 0 THEN MOVE SDAYI TO PROJECT-START-DAY
+           IF DAYL > 0 THEN MOVE DAYI TO NOTE-DAY
            END-IF.
-           IF EYEARL > 0 THEN MOVE EYEARI TO PROJECT-END-YEAR
+           IF SUBJECTL > 0 THEN MOVE SUBJECTI TO NOTE-SUBJECT
            END-IF.
-           IF EMONTHL > 0 THEN MOVE EMONTHI TO PROJECT-END-MONTH
+           IF NOTE1L > 0 THEN MOVE NOTE1I TO NOTE-NOTE-1
            END-IF.
-           IF EDAYL > 0 THEN MOVE EDAYI TO PROJECT-END-DAY
+           IF NOTE2L > 0 THEN MOVE NOTE2I TO NOTE-NOTE-2
            END-IF.
-           IF STATUSNOTE1L > 0 THEN
-               MOVE STATUSNOTE1I TO PROJECT-STATUS-NOTE-1
+           IF NOTE3L > 0 THEN MOVE NOTE3I TO NOTE-NOTE-3
            END-IF.
-           IF STATUSNOTE2L > 0 THEN
-               MOVE STATUSNOTE2I TO PROJECT-STATUS-NOTE-2
+           IF NOTE4L > 0 THEN MOVE NOTE4I TO NOTE-NOTE-4
            END-IF.
-           IF STATUSNOTE3L > 0 THEN
-               MOVE STATUSNOTE3I TO PROJECT-STATUS-NOTE-3
+           IF NOTE5L > 0 THEN MOVE NOTE5I TO NOTE-NOTE-5
            END-IF.
-           IF STATUSNOTE4L > 0 THEN
-               MOVE STATUSNOTE4I TO PROJECT-STATUS-NOTE-4
+           IF NOTE6L > 0 THEN MOVE NOTE6I TO NOTE-NOTE-6
            END-IF.
-           IF STATUSNOTE5L > 0 THEN
-               MOVE STATUSNOTE5I TO PROJECT-STATUS-NOTE-5
+           IF NOTE7L > 0 THEN MOVE NOTE7I TO NOTE-NOTE-7
            END-IF.
-           IF NOTE1L > 0 THEN MOVE NOTE1I TO PROJECT-NOTE-1
+           IF NOTE8L > 0 THEN MOVE NOTE8I TO NOTE-NOTE-8
            END-IF.
-           IF NOTE2L > 0 THEN MOVE NOTE2I TO PROJECT-NOTE-2
+           IF NOTE9L > 0 THEN MOVE NOTE9I TO NOTE-NOTE-9
            END-IF.
-           IF NOTE3L > 0 THEN MOVE NOTE3I TO PROJECT-NOTE-3
+           IF NOTE10L > 0 THEN MOVE NOTE10I TO NOTE-NOTE-10
            END-IF.
-           IF NOTE4L > 0 THEN MOVE NOTE4I TO PROJECT-NOTE-4
+           IF NOTE11L > 0 THEN MOVE NOTE11I TO NOTE-NOTE-11
            END-IF.
-           IF NOTE5L > 0 THEN MOVE NOTE5I TO PROJECT-NOTE-5
+           IF NOTE12L > 0 THEN MOVE NOTE12I TO NOTE-NOTE-12
+           END-IF.
+           IF NOTE13L > 0 THEN MOVE NOTE13I TO NOTE-NOTE-13
+           END-IF.
+           IF NOTE14L > 0 THEN MOVE NOTE14I TO NOTE-NOTE-14
            END-IF.
       **************************************************************************
        END-OF-PROGRAM.
            EXEC CICS XCTL
-                PROGRAM('HPMSCM06')
+                PROGRAM('HPMSCM07')
                 RESP(XCTL-RESP-CODE)
            END-EXEC.
       **************************************************************************
        GENERAL-ERROR-ROUTINE.
-           MOVE LOW-VALUES TO PMGMTO.
+           MOVE LOW-VALUES TO NOTEO.
 
            ADD EIBRESP TO ZERO GIVING X-EIB-RESP.
            ADD EIBRESP2 TO ZERO GIVING X-EIB-RESP2.
@@ -349,7 +350,7 @@
       **************************************************************************
        GET-INFORMATION.
            PERFORM SCREEN-IO-GET-DATA-FOR-INQUIRY.
-           PERFORM PROJECT-READ.
+           PERFORM NOTE-READ.
            IF DATA-RESP-CODE = ZEROS
                PERFORM DATA-FILE-TO-SCREEN
            ELSE
@@ -359,7 +360,7 @@
            PERFORM SCREEN-IO-SEND-UPDATE.
       **************************************************************************
        MAP-FAIL-ROUTINE.
-           MOVE LOW-VALUES TO PMGMTO.
+           MOVE LOW-VALUES TO NOTEO.
            MOVE "MAP FAILURE" TO X-EIB-USER-MSG.
            ADD EIBRESP TO ZERO GIVING X-EIB-RESP.
            ADD EIBRESP2 TO ZERO GIVING X-EIB-RESP2.
@@ -372,8 +373,8 @@
       **************************************************************************
        SCREEN-IO-GET-DATA-FOR-INQUIRY.
            EXEC CICS RECEIVE
-                MAP    ('PMGMT')
-                MAPSET ('HPMSB05')
+                MAP    ('NOTE')
+                MAPSET ('HPMSB07')
                 RESP(WS-RESPONSE)
                 RESP2(WS-REASON-CODE)
            END-EXEC.
@@ -381,22 +382,22 @@
            IF IDL > ZERO
                MOVE IDI TO CA-RECORD-ID
            ELSE
-               MOVE LOW-VALUES TO PMGMTO
-               MOVE "PLEASE ENTER 6 DIGIT PROJECT ID" TO MSGO
+               MOVE LOW-VALUES TO NOTEO
+               MOVE "PLEASE ENTER 6 DIGIT ID NUMBER" TO MSGO
                PERFORM RECOVERY-ROUTINE
            END-IF.
       **************************************************************************
        SCREEN-IO-GET-DATA-FOR-UPDATE.
            EXEC CICS RECEIVE
-                MAP    ('PMGMT')
-                MAPSET ('HPMSB05')
+                MAP    ('NOTE')
+                MAPSET ('HPMSB07')
            END-EXEC.
       **************************************************************************
        SCREEN-IO-SEND-UPDATE.
            PERFORM BUILD-HEADER.
            EXEC CICS SEND
-                MAP    ('PMGMT')
-                MAPSET ('HPMSB05')
+                MAP    ('NOTE')
+                MAPSET ('HPMSB07')
                 ERASE
            END-EXEC.
            EXEC CICS RETURN
@@ -406,7 +407,7 @@
       **************************************************************************
        TRANSFER-CONTROL.
            EXEC CICS XCTL
-                PROGRAM('HPMSCM06')
+                PROGRAM('HPMSCM07')
                 RESP(XCTL-RESP-CODE)
            END-EXEC.
 
@@ -419,14 +420,14 @@
            PERFORM UPDATE-INFORMATION-DATA.
       **************************************************************************
        UPDATE-INFORMATION-DATA.
-           PERFORM PROJECT-READ-UPDATE.
+           PERFORM NOTE-READ-UPDATE.
            IF DATA-RESP-CODE NOT = 0
                PERFORM GENERAL-ERROR-ROUTINE
            END-IF.
            PERFORM DATA-SCREEN-TO-FILE.
-           PERFORM PROJECT-REWRITE.
+           PERFORM NOTE-REWRITE.
            IF DATA-RESP-CODE = 0
-               MOVE LOW-VALUES TO PMGMTO
+               MOVE LOW-VALUES TO NOTEO
                MOVE "UPDATE COMPLETED" TO MSGO
                PERFORM SCREEN-IO-SEND-UPDATE
            ELSE

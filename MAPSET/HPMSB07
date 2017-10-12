@@ -1,24 +1,38 @@
          PRINT NOGEN
-HPMSB06  DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      *
+HPMSB07  DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,STORAGE=AUTO,      *
                CTRL=FREEKB,TERM=3270-2,TIOAPFX=YES,                    *
                MAPATTS=(COLOR,HILIGHT,VALIDN),                         *
                DSATTS=(COLOR,HILIGHT,VALIDN)
 ***********************************************************************
-INCI     DFHMDI SIZE=(24,80),                                          *
+NOTE     DFHMDI SIZE=(24,80),                                          *
                COLUMN=1,                                               *
                LINE=1
 TITLE1   DFHMDF POS=(1,1),LENGTH=70,                                   *
-               INITIAL='INCIDENT REPORTING',                           *
+               INITIAL='MISCELLANEOUS NOTES',                          *
                ATTRB=PROT,COLOR=RED
 PNAME    DFHMDF POS=(1,72),LENGTH=8,                                   *
                ATTRB=PROT,COLOR=BLUE
-TITLE2   DFHMDF POS=(2,1),LENGTH=70,INITIAL='NEW INCIDENT',            *
+TITLE2   DFHMDF POS=(2,1),LENGTH=70,INITIAL='NEW NOTE',                *
                ATTRB=PROT,COLOR=RED
          DFHMDF POS=(3,1),LENGTH=10,INITIAL='RECORD ID ',              *
                ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
 ID       DFHMDF POS=(3,12),LENGTH=6,                                   *
                ATTRB=(UNPROT,IC,NORM),HILIGHT=UNDERLINE,COLOR=GREEN
          DFHMDF POS=(3,19),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(4,1),LENGTH=10,INITIAL='CATEGORY  ',              *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+CATEGORY DFHMDF POS=(4,12),LENGTH=28,                                  *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE,                  *
+               VALIDN=MUSTENTER,COLOR=GREEN
+         DFHMDF POS=(4,41),LENGTH=0,                                   *
+               ATTRB=ASKIP
+         DFHMDF POS=(4,44),LENGTH=5,INITIAL='GROUP     ',              *
+               ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
+GROUP    DFHMDF POS=(4,50),LENGTH=28,                                  *
+               ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE,                  *
+               VALIDN=MUSTENTER,COLOR=GREEN
+         DFHMDF POS=(4,79),LENGTH=0,                                   *
                ATTRB=ASKIP
          DFHMDF POS=(5,1),LENGTH=10,INITIAL='AUTHOR    ',              *
                ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
@@ -55,9 +69,9 @@ DAY      DFHMDF POS=(6,32),LENGTH=2,                                   *
                VALIDN=MUSTENTER,COLOR=GREEN
          DFHMDF POS=(6,35),LENGTH=0,                                   *
                ATTRB=ASKIP
-         DFHMDF POS=(7,1),LENGTH=10,INITIAL='LOCATION  ',              *
+         DFHMDF POS=(7,1),LENGTH=10,INITIAL='SUBJECT   ',              *
                ATTRB=(ASKIP,NORM),HILIGHT=OFF,COLOR=GREEN
-LOCATION DFHMDF POS=(7,12),LENGTH=66,                                  *
+SUBJECT  DFHMDF POS=(7,12),LENGTH=66,                                  *
                ATTRB=(UNPROT,NORM),HILIGHT=UNDERLINE,                  *
                VALIDN=MUSTENTER,COLOR=GREEN
          DFHMDF POS=(7,79),LENGTH=0,                                   *
